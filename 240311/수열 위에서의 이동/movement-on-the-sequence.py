@@ -11,7 +11,6 @@ while len(li)!=0:
         break
     elif maxvalue==1:
         li=li[1:]
-        continue
     else:
         l=li[1:maxvalue+1]
         li=li[l.index(max(l))+1:]
