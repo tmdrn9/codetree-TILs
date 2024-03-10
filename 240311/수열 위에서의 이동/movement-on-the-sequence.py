@@ -8,7 +8,7 @@ while len(li)!=0:
         cnt=-1
         break
     cnt+=1
-    if maxvalue>=len(li):
+    if maxvalue>len(li):
         break
     elif maxvalue==1:
         li=li[1:]
