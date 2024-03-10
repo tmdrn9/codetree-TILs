@@ -1,7 +1,7 @@
 n=int(input())
 li=list(map(int,input().split()))
-cnt=0
-cur=1
+cnt=1
+cur=0
 while cur<=n-1:
     # print(cur)
     tempmax=li[cur]
