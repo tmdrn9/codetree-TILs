@@ -1,0 +1,6 @@
+li=list(map(int,input().split()))
+m=int(sum(li)/len(li))
+hap=sum(li)
+print(hap)
+print(m)
+print(hap-m)
