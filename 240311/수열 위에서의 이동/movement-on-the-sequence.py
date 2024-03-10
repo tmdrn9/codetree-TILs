@@ -2,7 +2,7 @@ n=int(input())
 li=list(map(int,input().split()))
 cnt=0
 while len(li)!=0:
-    print(li)
+    # print(li)
     maxvalue=li[0]
     if maxvalue == 0:
         cnt=-1
@@ -13,6 +13,6 @@ while len(li)!=0:
     elif maxvalue==1:
         li=li[1:]
     else:
-        l=li[1:maxvalue+1]
-        li=li[l.index(max(l))+1:]
+        temp=li[1:maxvalue+1]
+        li=li[1+(temp.index(max(temp))):]
 print(cnt)
