@@ -2,6 +2,7 @@ n=int(input())
 li=list(map(int,input().split()))
 cnt=0
 while len(li)!=0:
+    print(li)
     maxvalue=li[0]
     if maxvalue == 0:
         cnt=-1
