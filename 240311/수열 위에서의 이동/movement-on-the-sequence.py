@@ -1,20 +1,18 @@
 n=int(input())
 li=list(map(int,input().split()))
-cnt=1
-cur=0
-while cur<=n-1:
-    # print(cur)
-    tempmax=li[cur]
-    cnt+=1
-    if cur+tempmax>=n-1:
-        break
-    elif tempmax==1:
-        cur+=1
-        continue
-    elif tempmax == 0:
+cnt=0
+while len(li)!=0:
+    maxvalue=li[0]
+    if maxvalue == 0:
         cnt=-1
         break
+    cnt+=1
+    if maxvalue>len(li):
+        break
+    elif maxvalue==1:
+        li=li[1:]
+        continue
     else:
-        l=li[cur+1:cur+tempmax+2]
-        cur+=(l.index(max(l))+1)
+        l=li[1:maxvalue+1]
+        li=li[l.index(max(l))+1:]
 print(cnt)
