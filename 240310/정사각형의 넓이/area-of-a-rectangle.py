@@ -1,3 +1,4 @@
 n=int(input())
-answer= 'tiny' if n<5 else n*n
-print(answer)
+print(n*n)
+if n<5:
+    print('tiny')
