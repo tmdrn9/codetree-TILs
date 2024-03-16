@@ -1,14 +1,15 @@
 import itertools
 n,k=map(int,input().split())
 li=list(map(int,input().split()))
-# n=5
-# k=6
+d=dict()
+for i in li:
+    if i in d:
+        d[i]+=1
+    else:
+        d[i]=1
 cnt=0
-# li=[3, 3, 3, 3, 3]
-for i in range(n):
-    temp=li.pop(i)
-    if k-temp in li:
-        cnt+=1
-    li.append(temp)
-print(cnt)
+for i in d.keys():
+    dif=k-i
+    if dif in li:
+        cnt+=d[dif]
 print(int(cnt/2))
