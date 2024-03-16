@@ -1,12 +1,14 @@
 import itertools
 n,k=map(int,input().split())
 li=list(map(int,input().split()))
-
+# n=5
+# k=6
 cnt=0
-for i,a in enumerate(li):
+# li=[3, 3, 3, 3, 3]
+for i in range(n):
     temp=li.pop(i)
-    if k-a in li:
+    if k-temp in li:
         cnt+=1
     li.append(temp)
 
-print(int(cnt/2))
+print(cnt)
