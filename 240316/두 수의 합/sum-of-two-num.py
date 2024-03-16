@@ -1,15 +1,17 @@
 import itertools
-n,k=map(int,input().split())
-li=list(map(int,input().split()))
+# n,k=map(int,input().split())
+# li=list(map(int,input().split()))
+n,k=5,6
+li=[3, 3, 3, 3, 3]
 d=dict()
+cnt=0
 for i in li:
+    dif=k-i
+    if dif in d:
+        cnt+=d[dif]
     if i in d:
         d[i]+=1
     else:
         d[i]=1
-cnt=0
-for i in d.keys():
-    dif=k-i
-    if dif in li:
-        cnt+=d[dif]
-print(int(cnt/2))
+
+print(cnt)
