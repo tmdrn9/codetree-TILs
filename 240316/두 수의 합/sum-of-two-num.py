@@ -10,5 +10,5 @@ for i in range(n):
     if k-temp in li:
         cnt+=1
     li.append(temp)
-
+print(cnt)
 print(int(cnt/2))
