@@ -11,4 +11,4 @@ for i in range(n):
         cnt+=1
     li.append(temp)
 
-print(cnt)
+print(int(cnt/2))
