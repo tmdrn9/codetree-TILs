@@ -1,10 +1,12 @@
 n,m=map(int,input().split())
-d=[]
+d=dict()
 for i in range(n):
-    d.append(input())
+    t=input()
+    d[t]=i+1
+d_key=list(d.keys())
 for j in range(m):
     g=input()
     if g.isdigit():
-        print(d[int(g)-1])
+        print(d_key[int(g)-1])
     else:
-        print(d.index(g)+1)
+        print(d[g])
