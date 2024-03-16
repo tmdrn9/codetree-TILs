@@ -6,5 +6,5 @@ for i in range(n):
         d[s]+=1
     else:
         d[s]=1
-ds=sorted(d,key=lambda x:x[1])
-print(d[ds[0]])
+ds=sorted(d.items(), key=lambda item: item[1],reverse=True)
+print(ds[0][1])
