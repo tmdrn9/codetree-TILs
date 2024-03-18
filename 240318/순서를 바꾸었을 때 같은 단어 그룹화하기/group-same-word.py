@@ -10,6 +10,11 @@ for i in range(n):
             d[j]+=1
         else:
             d[j]=1
-    answer.append(sorted(d.items()))
-
-print(answer)
+    answer.append(tuple(sorted(d.items())))
+group=set(answer)
+cnt=0
+for i in group:
+    temp=answer.count(i)
+    if cnt<=temp:
+        cnt=temp
+print(cnt)
