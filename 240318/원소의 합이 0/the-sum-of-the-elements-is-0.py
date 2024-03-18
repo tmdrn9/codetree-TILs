@@ -12,24 +12,10 @@ d3=dict()
 d4=dict()
 
 for j in li2:
-    if j[0] in d1:
-        d1[j[0]]+=1
-    else:
-        d1[j[0]]=1
-    if j[1] in d2:
-        d2[j[1]]+=1
-    else:
-        d2[j[1]]=1
-
-    if j[2] in d3:
-        d3[j[2]]+=1
-    else:
-        d3[j[2]]=1
-
-    if j[3] in d4:
-        d4[j[3]]+=1
-    else:
-        d4[j[3]]=1
+    d1[j[0]]=1 if j[0] not in d1 else d1[j[0]]+1
+    d2[j[1]]=1 if j[1] not in d2 else d2[j[1]]+1
+    d3[j[2]]=1 if j[1] not in d3 else d3[j[0]]+1
+    d4[j[3]]=1 if j[2] not in d4 else d4[j[0]]+1
 
 
 answer=0
