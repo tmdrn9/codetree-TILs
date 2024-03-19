@@ -1,19 +1,15 @@
 n,k=map(int,input().split())
+li=[list(map(int,input().split())) for _ in range(k)]
 
-li=[]
 d=dict()
 person=list(range(1,n+1))
 
-for i in range(n):
-    d[i+1]={i+1}
-for i in range(k):
-    li.append(list(map(int,input().split())))
+for i in range(1,n+1):
+    d[i]={i}
+
 
 for i in range(3*k):
     change=li[i%k]
-    # temp=person[change[0]-1]
-    # person[change[0]-1]=person[change[1]-1]
-    # person[change[1]-1]=temp
     person[change[0]-1], person[change[1]-1] = person[change[1]-1], person[change[0]-1]
     if person==list(range(1,n+1)):
         break
