@@ -13,6 +13,8 @@ for i in range(3*k):
     temp=person[change[0]-1]
     person[change[0]-1]=person[change[1]-1]
     person[change[1]-1]=temp
+    if person==list(range(1,n+1)):
+        break
     d[change[0]-1].append(person[change[0]-1])
     d[change[1]-1].append(person[change[1]-1])
 
