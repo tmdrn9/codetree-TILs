@@ -11,9 +11,10 @@ for i in range(k):
 
 for i in range(3*k):
     change=li[i%k]
-    temp=person[change[0]-1]
-    person[change[0]-1]=person[change[1]-1]
-    person[change[1]-1]=temp
+    # temp=person[change[0]-1]
+    # person[change[0]-1]=person[change[1]-1]
+    # person[change[1]-1]=temp
+    person[change[0]-1], person[change[1]-1] = person[change[1]-1], person[change[0]-1]
     if person==list(range(1,n+1)):
         break
     d[person[change[0]-1]].add(change[0])
