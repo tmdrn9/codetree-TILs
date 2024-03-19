@@ -6,13 +6,13 @@ person=list(range(1,n+1))
 
 for i in range(1,n+1):
     d[i]={i}
+# s = [set() for _ in range(n + 1)]
 
 
 for i in range(3*k):
     change=li[i%k]
     person[change[0]-1], person[change[1]-1] = person[change[1]-1], person[change[0]-1]
-    if person==list(range(1,n+1)):
-        break
+    # s[]
     d[person[change[0]-1]].add(change[0])
     d[person[change[1]-1]].add(change[1])
 
