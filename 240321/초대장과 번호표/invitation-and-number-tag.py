@@ -4,21 +4,18 @@ total=[]
 # for _ in range(g):
 #     group=set(list(map(int,input().split()))[1:])
 #     total.append(group)
-#     if len(group.intersection(invite))!=0 and len(group-invite) == 1:
+#     if len(group-invite) == 1:
 #         for i in group:
 #             invite.add(i)
-for _ in range(g):
-    group=set(list(map(int,input().split()))[1:])
-    total.append(group)
-    if len(group-invite) == 1:
-        for i in group:
-            invite.add(i)
 
-# check=False
-# while check:
-#     for gr in total:
-#         if len(gr.intersection(invite))!=0 and len(gr-invite) == 1:
-#             for i in gr:
-#                 invite.add(i)
-#                 check=True
+total=[(set(list(map(int,input().split()))[1:])) for _ in range(g)]
+for i in range(g):
+    gr=total[i]
+    if len(gr-invite) == 1:
+        for j in gr:
+            invite.add(j)
+        i=0
+
+
+
 print(len(invite))
