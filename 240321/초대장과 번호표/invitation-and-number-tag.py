@@ -16,8 +16,7 @@ while len(total) != i:
     gr=total[i]
     cha=gr-invite
     if len(cha) == 1:
-        for j in cha:
-            invite.add(j)
+        invite=invite.union(cha)
         del gr
         i=0
     else:
