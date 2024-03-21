@@ -9,16 +9,21 @@ total=[]
 #             invite.add(i)
 
 
-total=[(set(list(map(int,input().split()))[1:])) for _ in range(g)]
-for i in range(g):
+total=[set(list(map(int,input().split()))[1:]) for _ in range(g)]
+
+i=0
+while True:
     gr=total[i]
     cha=gr-invite
     if len(cha) == 1:
         for j in cha:
             invite.add(j)
-
+        del total[i]
         i=0
+    else:
+        i+=1
 
-
+    if len(total) == i :
+        break
 
 print(len(invite))
