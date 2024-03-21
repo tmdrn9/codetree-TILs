@@ -18,7 +18,7 @@ while True:
     if len(cha) == 1:
         for j in cha:
             invite.add(j)
-        del total[i]
+        del gr
         i=0
     else:
         i+=1
