@@ -8,12 +8,15 @@ total=[]
 #         for i in group:
 #             invite.add(i)
 
+
 total=[(set(list(map(int,input().split()))[1:])) for _ in range(g)]
 for i in range(g):
     gr=total[i]
-    if len(gr-invite) == 1:
-        for j in gr:
+    cha=gr-invite
+    if len(cha) == 1:
+        for j in cha:
             invite.add(j)
+            print(j)
         i=0
 
 
