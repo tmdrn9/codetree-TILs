@@ -16,7 +16,7 @@ for i in range(g):
     if len(cha) == 1:
         for j in cha:
             invite.add(j)
-            print(j)
+
         i=0
 
 
