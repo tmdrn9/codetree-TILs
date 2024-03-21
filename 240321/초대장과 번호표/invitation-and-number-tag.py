@@ -12,7 +12,7 @@ total=[]
 total=[set(list(map(int,input().split()))[1:]) for _ in range(g)]
 
 i=0
-while True:
+while len(total) == i:
     gr=total[i]
     cha=gr-invite
     if len(cha) == 1:
@@ -22,8 +22,5 @@ while True:
         i=0
     else:
         i+=1
-
-    if len(total) == i :
-        break
 
 print(len(invite))
