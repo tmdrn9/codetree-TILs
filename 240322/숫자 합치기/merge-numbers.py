@@ -6,6 +6,7 @@ while len(li)>1:
     li.remove(a)
     b=min(li)
     li.remove(b)
-    s+=a+b
-    li.append(a+b)
+    c=a+b
+    s+=c
+    li.append(c)
 print(s)
