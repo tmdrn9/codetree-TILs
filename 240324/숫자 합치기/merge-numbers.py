@@ -1,11 +1,14 @@
+import heapq
+
 n=int(input())
-li=list(map(int,input().split()))
+pq=list(map(int,input().split()))
 answer=0
-while len(li)>2:
-    li=sorted(li)
-    a,b=li[0],li[1]
+# for i in li:
+#     heapq.heappush(pq,i)
+heapq.heapify(pq)
+while len(pq)>1:
+    a,b=heapq.heappop(pq),heapq.heappop(pq)
     temp=a+b
-    li=li[2:]
     answer+=temp
-    li.append(temp)
-print(answer+sum(li))
+    heapq.heappush(pq,temp)
+print(answer)
