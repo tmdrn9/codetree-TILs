@@ -15,7 +15,7 @@ while True:
     aa=heapq.heappop(a)
     if aa>temp:
         answer+=1
-        if len(b)>0:
+        if len(b)>0 and len(a)>0:
             temp=heapq.heappop(b)
         else:
             break
