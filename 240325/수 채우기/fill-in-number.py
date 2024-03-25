@@ -1,4 +1,4 @@
-n=3301 #int(input())
+n=int(input())
 n5,remain=divmod(n,5)
 if remain!=0:
     n2,remain2=divmod(remain,2)
