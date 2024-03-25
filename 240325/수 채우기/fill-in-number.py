@@ -1,4 +1,7 @@
 n=int(input())
+n5=0
+if n<5 and n%2!=0:
+    print(-1)
 n5,remain=divmod(n,5)
 if remain==0:
     print(n5)
