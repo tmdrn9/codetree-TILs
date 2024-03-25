@@ -1,7 +1,7 @@
 import heapq
 
 n=int(input())
-total={i for i in range(1,2*n)}
+total={i for i in range(1,(2*n)+1)}
 answer=0
 
 b=[int(input()) for _ in range(n)]
@@ -11,10 +11,13 @@ heapq.heapify(b)
 heapq.heapify(a)
 
 temp=heapq.heappop(b)
-while len(a)>0:
+while True:
     aa=heapq.heappop(a)
     if aa>temp:
         answer+=1
-        temp=heapq.heappop(b)
+        if len(b)>0:
+            temp=heapq.heappop(b)
+        else:
+            break
 
 print(answer)
