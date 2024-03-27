@@ -1,13 +1,6 @@
+from sortedcontainers import SortedDict
 n=int(input())
-li=[]
-for _ in range(n):
-    x,y=map(int,input().split())
-    li.extend([y]*x)
-li=sorted(li)
-MIN=0
-for i in range(int(len(li)/2)):
-    temp=li[i]+li[len(li)-1-i]
-    if temp>MIN:
-        MIN=temp
+li=[list(map(int,input().split())) for _ in range(n)]
+li=sorted(li,key=lambda x:x[1])
 
-print(MIN)
+print(li[0][1]+li[-1][1])
