@@ -11,8 +11,9 @@ for b in black:
         if b[0]<=r and b[1]>=r:
             answer+=1
             red.remove(r)
-            # print(r,b)
             break
+        else:
+            red.remove(r)
 
 ###################
 
