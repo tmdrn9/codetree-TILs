@@ -1,7 +1,6 @@
 n=int(input())
 li=list(map(int,input().split()))
 cnt=0
-ok=False
 def change(temp):
     return map(lambda x:1 if x==0 else 0,temp)
 
@@ -27,10 +26,9 @@ for _ in range(2):
                     cnt+=1
                     li[i-1:i+2]=change(temp)
         if li==[1]*n:
-            ok=True
             break
 
-if ok:
+if li==[1]*n:
     print(cnt)
 else:
     print(-1)
