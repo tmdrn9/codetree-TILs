@@ -1,5 +1,5 @@
 n,m=map(int,input().split())
-n_li=list(map(int,input().split()))
+n_li=sorted(list(map(int,input().split())))
 
 def lower_bound(li,target): #target이 처음으로 나오는 위치
     left,right=0,n-1
