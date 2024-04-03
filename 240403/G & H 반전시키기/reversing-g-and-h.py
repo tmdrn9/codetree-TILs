@@ -13,4 +13,4 @@ for i in range(n):
 
     else:
         mismatched = False
-    print(mismatched)
+print(answer)
