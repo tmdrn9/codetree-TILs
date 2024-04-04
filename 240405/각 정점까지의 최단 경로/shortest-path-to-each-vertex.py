@@ -14,6 +14,7 @@ for _ in range(m):
 for i in range(1,m+1):
     x,y,z=edges[i]
     graph[x].append((y,z))
+    graph[y].append((x,z))
 
 dist[k]=0
 heapq.heappush(pq,(0,k))
