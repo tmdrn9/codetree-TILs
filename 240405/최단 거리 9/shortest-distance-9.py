@@ -12,7 +12,7 @@ for i in range(1,m+1):
     x,y,z=edges[i]
     graph[x].append((y,z)) 
     # #만약 무방향그래프면
-    # graph[y].append((x,z)) 
+    graph[y].append((x,z)) 
 
 a,b=map(int,input().split())
 path=[0]*(n+1)
@@ -31,6 +31,7 @@ while pq:
             dist[y]=new_dist
             heapq.heappush(pq,(new_dist,y))
             path[y]=min_index
+
 print(dist[b])
 now=b
 v=[b]
