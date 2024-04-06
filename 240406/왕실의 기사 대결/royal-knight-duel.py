@@ -45,7 +45,7 @@ def damage(i):
     if grid[r][c]==1:
         people[i][4]-=1
         dmg+=1
-    return dmg
+    return dmg,people[i][4]
 
 def move(i,d):
     r,c,h,w,k=people[i]
@@ -56,8 +56,17 @@ def move(i,d):
 
     people[i]=[r+DX[d],c+DY[d],h,w,k]
 
+def remove(i):
+    r,c,h,w,k=people[i]
+    for i in range(h):
+        for j in range(w):
+            people_grid[r+i][c+j]=0
+
 answer=0
+rm_list=[]
 for i,d in king:
+    if i in rm_list:
+        continue
     other=set([i])
     ok=False
     surround(i,d)
@@ -66,6 +75,9 @@ for i,d in king:
         continue
     for n in list(other)[::-1]:
         move(n,d)
-        answer+=damage(n)
+        d,temp=damage(n)
+        answer+=d
+        if temp==0:
+            remove(i)
 
 print(answer)
