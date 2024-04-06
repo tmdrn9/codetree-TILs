@@ -12,8 +12,8 @@ def dfs(x,y):
         if in_range(new_x,new_y) and not visited[new_x][new_y]:
             visited[new_x][new_y]=True
             dfs(new_x,new_y)
-
-for k in range(1,max(max(homes))-1):
+max_k= max(max(homes)) if len(homes)>1 else max(homes)
+for k in range(1,max_k-1):
     visited=[]
     for i in homes:
         visited.append(list(map(lambda x: True if x<=k else False ,i)))
