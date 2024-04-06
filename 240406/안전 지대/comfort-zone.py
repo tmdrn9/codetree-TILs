@@ -15,13 +15,14 @@ def dfs(x,y):
             dfs(new_x,new_y)
 min_k= min(min(homes)) if len(homes)>1 else min(homes)
 max_k= max(max(homes)) if len(homes)>1 else max(homes)
+
 if max_k==min_k:
     if min_k==1:
         print(1,0)
     else:
         print(min_k[0]-1,1)
 else:
-    for k in range(min_k,max_k):
+    for k in range(min_k,max_k+1):
         visited=[]
         for i in homes:
             visited.append(list(map(lambda x: True if x<=k else False ,i)))
