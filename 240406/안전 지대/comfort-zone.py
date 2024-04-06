@@ -18,7 +18,7 @@ max_k= max(max(homes)) if len(homes)>1 else max(homes)
 if max_k==min_k:
     print(min_k,0)
 else:
-    for k in range(min_k,max_k-1):
+    for k in range(min_k,max_k):
         visited=[]
         for i in homes:
             visited.append(list(map(lambda x: True if x<=k else False ,i)))
