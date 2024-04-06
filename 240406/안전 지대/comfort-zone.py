@@ -16,7 +16,10 @@ def dfs(x,y):
 min_k= min(min(homes)) if len(homes)>1 else min(homes)
 max_k= max(max(homes)) if len(homes)>1 else max(homes)
 if max_k==min_k:
-    print(min_k,0)
+    if min_k==1:
+        print(min_k[0],0)
+    else:
+        print(min_k[0]-1,1)
 else:
     for k in range(min_k,max_k):
         visited=[]
