@@ -95,6 +95,7 @@ for i,d in king:
   
 answer=0
 for i,p in enumerate(people):
+    print(i,p[4])
     if i==0 or i in rm_list:
         continue
     answer+=(original_k[i]-p[4])
