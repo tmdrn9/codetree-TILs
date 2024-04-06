@@ -3,7 +3,7 @@ l,n,q=map(int,input().split())
 grid=[list(map(int,input().split())) for _ in range(l)]
 
 # (r,c,h,w,k)/r,c:초기위치/hw세로가로/k체력
-people=[(-1,-1,-1,-1,-1)]
+people=[[-1,-1,-1,-1,-1]]
 
 for _ in range(n):
     people.append(list(map(int,input().split())))
@@ -44,11 +44,13 @@ def surround(n,d):
 
 def damage(i):
     global people
+    cnt=0
     r,c,h,w,_=people[i]
     for ii in range(h):
         for jj in range(w):
             if grid[r+ii][c+jj]==1:
-                people[i][4]-=1
+                cnt+=1
+    return cnt
 
 def move(i,d):
     global people_grid
@@ -77,12 +79,16 @@ for i,d in king:
 
     if ok:
         continue
-
+    
+    self_damage=True
     for n in list(other)[::-1]:
         move(n,d)
-        if n==i:
+        n_damage=damage(n)
+        if n!=i and n_damage!=0:
+            self_damage=False
+        if n==i and not self_damage:
             continue
-        damage(n)
+        people[n][4]-=n_damage
         if people[n][4]==0:
             remove(n)
             rm_list.append(n)
