@@ -1,7 +1,15 @@
 import heapq
 n=int(input())
-grid=[list(map(int,input().split())) for _ in range(n)]
-visited=[[False]*n for _ in range(n)]
+# grid=[list(map(int,input().split())) for _ in range(n)]
+# visited=[[False]*n for _ in range(n)]
+grid=[]
+visited=[]
+for _ in range(n):
+    temp=list(map(int,input().split()))
+    grid.append(temp)
+    visited.append(list(map(lambda x: False if x else True,temp)))
+
+
 people=[]
 
 def in_range(x,y):
