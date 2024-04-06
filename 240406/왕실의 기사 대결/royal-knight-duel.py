@@ -25,6 +25,7 @@ DX,DY=[-1,0,1,0],[0,1,0,-1]
 def in_range(x,y):
     return 0<=x and x<l and 0<=y and y<l and grid[x][y]!=2
 
+#움직일 수 있는지 확인하는 함수
 def surround(n,d):
     global other,ok
     x,y,h,w,_=people[n]
@@ -40,17 +41,14 @@ def surround(n,d):
                     continue
                 other.add(people_grid[new_x][new_y])
                 surround(people_grid[new_x][new_y],d)
+
 def damage(i):
-    cnt=0
     r,c,h,w,_=people[i]
     for ii in range(h):
         for jj in range(w):
-            # print(r+ii,c+jj)
             if grid[r+ii][c+jj]==1:
-                # print('?')
                 people[i][4]-=1
-                cnt+=1
-    return cnt, people[i][4]
+    return people[i][4]
 
 def move(i,d):
     r,c,h,w,k=people[i]
@@ -77,11 +75,12 @@ for i,d in king:
 
     if ok:
         continue
+        
     for n in list(other)[::-1]:
         move(n,d)
         if n==i:
             continue
-        dmg,temp=damage(n)
+        temp=damage(n)
         if temp==0:
             remove(n)
             rm_list.append(n)
