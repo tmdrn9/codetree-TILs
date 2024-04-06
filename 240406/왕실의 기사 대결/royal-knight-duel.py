@@ -48,7 +48,6 @@ def damage(i):
         for jj in range(w):
             if grid[r+ii][c+jj]==1:
                 people[i][4]-=1
-    return people[i][4]
 
 def move(i,d):
     r,c,h,w,k=people[i]
@@ -75,13 +74,13 @@ for i,d in king:
 
     if ok:
         continue
-        
+
     for n in list(other)[::-1]:
         move(n,d)
         if n==i:
             continue
-        temp=damage(n)
-        if temp==0:
+        damage(n)
+        if people[n][4]==0:
             remove(n)
             rm_list.append(n)
   
