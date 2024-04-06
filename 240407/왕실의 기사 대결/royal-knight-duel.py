@@ -89,7 +89,7 @@ for i,d in king:
         if n==i and not self_damage:
             continue
         people[n][4]-=n_damage
-        if people[n][4]==0:
+        if people[n][4]<=0:
             remove(n)
             rm_list.append(n)
   
