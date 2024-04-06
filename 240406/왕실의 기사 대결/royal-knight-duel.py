@@ -4,9 +4,10 @@ grid=[list(map(int,input().split())) for _ in range(l)]
 
 # (r,c,h,w,k)/r,c:초기위치/hw세로가로/k체력
 people=[(-1,-1,-1,-1,-1)]
+
 for _ in range(n):
     people.append(list(map(int,input().split())))
-
+original_k=[i[4] for i in people]
 people_grid=[[0]*l for _ in range(l)]
 
 for n,(r,c,h,w,k) in enumerate(people[1:]):
@@ -40,29 +41,32 @@ def surround(n,d):
                 other.add(people_grid[new_x][new_y])
                 surround(people_grid[new_x][new_y],d)
 def damage(i):
-    dmg=0
-    r,c,_,_,k=people[i]
-    if grid[r][c]==1:
-        people[i][4]-=1
-        dmg+=1
-    return dmg,people[i][4]
+    cnt=0
+    r,c,h,w,_=people[i]
+    for ii in range(h):
+        for jj in range(w):
+            # print(r+ii,c+jj)
+            if grid[r+ii][c+jj]==1:
+                # print('?')
+                people[i][4]-=1
+                cnt+=1
+    return cnt, people[i][4]
 
 def move(i,d):
     r,c,h,w,k=people[i]
-    for i in range(h):
-        for j in range(w):
-            people_grid[r+i][c+j]=0
-            people_grid[r+i+DX[d]][c+j+DY[d]]=i
+    for ii in range(h):
+        people_grid[r+ii][c:c+w]=[0]*w
+
+    for ii in range(h):
+        people_grid[r+DX[d]+ii][c+DY[d]:c+w+DY[d]]=[i]*w
 
     people[i]=[r+DX[d],c+DY[d],h,w,k]
 
 def remove(i):
     r,c,h,w,k=people[i]
     for i in range(h):
-        for j in range(w):
-            people_grid[r+i][c+j]=0
+        people_grid[r+i][c:c+w]=[0]*w
 
-answer=0
 rm_list=[]
 for i,d in king:
     if i in rm_list:
@@ -75,9 +79,16 @@ for i,d in king:
         continue
     for n in list(other)[::-1]:
         move(n,d)
-        d,temp=damage(n)
-        answer+=d
+        if n==i:
+            continue
+        dmg,temp=damage(n)
         if temp==0:
-            remove(i)
-
+            remove(n)
+            rm_list.append(n)
+  
+answer=0
+for i,p in enumerate(people):
+    if i==0 or i in rm_list:
+        continue
+    answer+=(original_k[i]-p[4])
 print(answer)
