@@ -35,7 +35,6 @@ def surround(n,d):
             new_y=y+j+DY[d]
             if not in_range(new_x,new_y):
                 ok=True
-                return 
             else:
                 if people_grid[new_x][new_y]==n or people_grid[new_x][new_y]==0:
                     continue
