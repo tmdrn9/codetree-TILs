@@ -83,9 +83,7 @@ for i,d in king:
     for n in list(other)[::-1]:
         move(n,d)
         n_damage=damage(n)
-        if n!=i and n_damage!=0:
-            self_damage=False
-        if n==i and not self_damage:
+        if n==i:
             continue
         people[n][4]-=n_damage
         if people[n][4]<=0:
