@@ -67,6 +67,7 @@ for turn in range(1,K+1):
                 continue
             heapq.heappush(weak,(grid[i][j],li[::-1].index(N*i+j) if N*i+j in li else math.inf ,-(i+j),-j,-i))
     _,_,_,attack_c,attack_r=heapq.heappop(weak)
+    del week
     attack_c,attack_r=-attack_c,-attack_r
     attark_n=N*attack_r+attack_c
     li.append(attark_n)
@@ -85,6 +86,7 @@ for turn in range(1,K+1):
                 continue
             heapq.heappush(strong, (-grid[i][j], li.index(N*i+j) if N*i+j in li else -math.inf, (i + j), j, i))
     _, _, _, loser_c, loser_r = heapq.heappop(strong)
+    del strong
     loser_n = N * loser_r + loser_c
     contain.extend([loser_n])
     # 최단경로가 존재하면 레이저 아님 포탄공격
