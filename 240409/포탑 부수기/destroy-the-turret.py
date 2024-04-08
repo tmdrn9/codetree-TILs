@@ -33,9 +33,9 @@ N, M, K = map(int, input().split())
 plus=N+M
 grid = [list(map(int, input().split())) for _ in range(N)]
 li = []  # 공격순서넣는 list
-
 for turn in range(1,K+1):
-    if len(set(map(lambda x:x if x>0 else 0, sum(grid,[])))-set([0]))==2:
+    temp=[i for i in sum(grid, []) if i>0]
+    if len(temp)==1:
         break
     contain=[]
     graph = [[] for _ in range(N * M)]
@@ -83,7 +83,7 @@ for turn in range(1,K+1):
         for j in range(M):
             if grid[i][j]<=0 or (i==attack_r and j==attack_c):
                 continue
-            heapq.heappush(strong, (-grid[i][j], li.index(N*i+j) if N*i+j in li else math.inf, (i + j), j, i))
+            heapq.heappush(strong, (-grid[i][j], li.index(N*i+j) if N*i+j in li else -math.inf, (i + j), j, i))
     _, _, _, loser_c, loser_r = heapq.heappop(strong)
     loser_n = N * loser_r + loser_c
     contain.extend([loser_n])
@@ -112,7 +112,7 @@ for turn in range(1,K+1):
                     contain.extend([loser_nr * N + loser_nc])
             else:
                 loser_nr,loser_nc = loser_nr % N, loser_nc % M
-                if grid[ni][nj] != 0:
+                if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
                     contain.extend([loser_nr * N + loser_nc])
 
@@ -120,6 +120,8 @@ for turn in range(1,K+1):
     # 부서지지 않은 포탑중 공격자와 공격자대상빼고 포탄 공격력+1
     for i in range(N):
         for j in range(M):
+            if grid[i][j]<=0:
+                grid[i][j]=0
             curr=N*i+j
             if curr in contain or grid[i][j]<=0:
                 continue
