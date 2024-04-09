@@ -87,12 +87,12 @@ for turn in range(1, K + 1):
             if 0 <= loser_nr < N and 0 <= loser_nc < M:
                 if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
-                    contain.extend([loser_nr * N + loser_nc])
+                    contain.append((loser_nr,loser_nc))
             else:
                 loser_nr, loser_nc = loser_nr % N, loser_nc % M
                 if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
-                    contain.extend([loser_nr * N + loser_nc])
+                    contain.append((loser_nr,loser_nc))
 
     ####공격끝####
     # 부서지지 않은 포탑중 공격자와 공격자대상빼고 포탄 공격력+1
