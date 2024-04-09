@@ -84,14 +84,16 @@ for turn in range(1, K + 1):
         aDX, aDY = [-1, -1, 0, 1, 1, 1, 0, -1], [0, 1, 1, 1, 0, -1, -1, -1]
         for dxx, dyy in zip(aDX, aDY):
             loser_nr, loser_nc = loser_r + dxx, loser_c + dyy
-            if (loser_nr, loser_nc)==(attack_r,attack_c):
-                continue
             if 0 <= loser_nr < N and 0 <= loser_nc < M:
+                if (loser_nr, loser_nc)==(attack_r,attack_c):
+                    continue
                 if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
                     contain.append((loser_nr, loser_nc))
             else:
                 loser_nr, loser_nc = loser_nr % N, loser_nc % M
+                if (loser_nr, loser_nc)==(attack_r,attack_c):
+                    continue
                 if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
                     contain.append((loser_nr, loser_nc))
