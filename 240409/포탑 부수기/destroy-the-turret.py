@@ -46,7 +46,7 @@ for turn in range(1, K + 1):
     _, _, _, attack_c, attack_r = heapq.heappop(weak)
 
     attack_c, attack_r = -attack_c, -attack_r
-    grid_t[i][j]=turn
+    grid_t[attack_r][attack_c]=turn
     contain.append((attack_r,attack_c))
     # n+m만큼의 공격력   증가
     grid[attack_r][attack_c] += plus
