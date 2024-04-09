@@ -62,7 +62,7 @@ for turn in range(1, K + 1):
                         add_.append([nx, ny, n])
                     else:
                         p[i][2]+=n
-                        del_.append(pp)
+                        # del_.append(pp)
                     grid[x][y]+=n
                     grid[nx][ny]-=n
                     dist+=n
