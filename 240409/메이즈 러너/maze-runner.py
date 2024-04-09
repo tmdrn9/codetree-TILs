@@ -61,7 +61,6 @@ for turn in range(1, K + 1):
                     if grid[nx][ny]==0:
                         add_.append([nx, ny, n])
                     else:
-                        i=p.index([nx,ny,grid[nx][ny]])
                         p[i][2]+=n
                         del_.append(pp)
                     grid[x][y]+=n
