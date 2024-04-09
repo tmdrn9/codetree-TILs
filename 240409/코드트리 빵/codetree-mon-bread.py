@@ -22,11 +22,11 @@ while True:
     for i in range(1,min(t,M+1)):
         if stop[i]==1:
             continue
-        x,y=m[i%N]
+        x,y=m[i]
         ax,ay=arrive[i]
         for dx,dy in zip(DX,DY):
             nx,ny=x+dx,y+dy
-            if not in_range(nx,ny) or grid[nx][ny]!=0 or abs(nx-ax)>abs(x-ax) or abs(ny-ay)>abs(y-ay):
+            if not in_range(nx,ny) and grid[nx][ny]!=0 or (abs(nx-ax)>abs(x-ax) or abs(ny-ay)>abs(y-ay)):
                 continue
             else:
                 m[i]=[nx,ny]
@@ -37,7 +37,7 @@ while True:
                 #     grid[x][y] =0
                 break
     # 2 도착하면 해당 편의점이 있는칸을 지나갈수 없게됨 -1로 표시하기
-    for i in range(1,M+1):
+    for i in range(1,min(t,M+1)):
         if stop[i]==1:
             continue
         if m[i]==arrive[i] and grid[m[i][0]][m[i][1]]==0:
@@ -55,7 +55,7 @@ while True:
         # grid[tx][ty]=t
         base.remove((tx,ty))
     #다 도착했는지 확인
-    if t<=M:
+    if t<M+1:
         t+=1
     else:
         if len(set(stop))!=1:
