@@ -30,11 +30,11 @@ while True:
                 continue
             else:
                 m[i]=[nx,ny]
-                grid[nx][ny]=i
+                # grid[nx][ny]=i
                 if t==i+1:
                     grid[x][y]=-1
-                else:
-                    grid[x][y] =0
+                # else:
+                #     grid[x][y] =0
                 break
     # 2 도착하면 해당 편의점이 있는칸을 지나갈수 없게됨 -1로 표시하기
     for i in range(1,M+1):
@@ -49,7 +49,7 @@ while True:
             heapq.heappush(pq,(abs(camp[0]-ax)+abs(camp[1]-ay),camp[1],camp[0]))
         _,ty,tx=heapq.heappop(pq)
         m[t]=[tx,ty]
-        grid[tx][ty]=t
+        # grid[tx][ty]=t
         base.remove((tx,ty))
     #다 도착했는지 확인
     if t<=M:
