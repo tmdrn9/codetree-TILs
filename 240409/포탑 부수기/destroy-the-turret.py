@@ -41,17 +41,17 @@ for turn in range(1, K + 1):
             if grid[i][j] <= 0:
                 continue
             heapq.heappush(weak, (
-            grid[i][j], li[::-1].index(N * i + j) if N * i + j in li else math.inf, -(i + j), -j, -i))
+            grid[i][j], li[::-1].index((i,j)) if (i,j) in li else math.inf, -(i + j), -j, -i))
     _, _, _, attack_c, attack_r = heapq.heappop(weak)
 
     attack_c, attack_r = -attack_c, -attack_r
-    attark_n = N * attack_r + attack_c
-    li.append(attark_n)
-    contain.extend([attark_n])
+    li.append((attack_r,attack_c))
+    contain.append((attack_r,attack_c))
     # n+m만큼의 공격력   증가
     grid[attack_r][attack_c] += plus
     damage = grid[attack_r][attack_c]
     half_damage = damage // 2
+
     # 2공격자 공격
     # 가장 강한 포탑 선정
     ## 공격한지 가장 오래된 포탑>행열합이 가장 작은 포탑>열값이 가장 작은 포탑
@@ -61,11 +61,10 @@ for turn in range(1, K + 1):
             if grid[i][j] <= 0 or (i == attack_r and j == attack_c):
                 continue
             heapq.heappush(strong,
-                            (-grid[i][j], li.index(N * i + j) if N * i + j in li else -math.inf, (i + j), j, i))
+                            (-grid[i][j], li.index((i, j)) if (i, j) in li else -math.inf, (i + j), j, i))
     _, _, _, loser_c, loser_r = heapq.heappop(strong)
 
-    loser_n = N * loser_r + loser_c
-    contain.extend([loser_n])
+    contain.append((loser_r,loser_c))
     # 최단경로가 존재하면 레이저 아님 포탄공격
     what = bfs((attack_r, attack_c), (loser_r, loser_c))
     if what != -1:
@@ -73,7 +72,7 @@ for turn in range(1, K + 1):
         for nn in what:
             lr, lc = nn
             grid[lr][lc] -= half_damage
-            contain.extend([nn])
+            contain.append(nn)
 
     # 레이저
     # 우/하/좌/상로 움직임,부서진 포탑이 있는 위치 지날 수 x,경로에있는애들은 공격력//2만큼 피해, 공격대상은 공격력만큼 피해
@@ -99,10 +98,9 @@ for turn in range(1, K + 1):
     # 부서지지 않은 포탑중 공격자와 공격자대상빼고 포탄 공격력+1
     for i in range(N):
         for j in range(M):
-            if grid[i][j] <= 0:
+            if grid[i][j] < 0:
                 grid[i][j] = 0
-            curr = N * i + j
-            if curr in contain or grid[i][j] <= 0:
+            if (i,j) in contain or grid[i][j] == 0:
                 continue
             grid[i][j] += 1
 print(max(sum(grid,[])))
