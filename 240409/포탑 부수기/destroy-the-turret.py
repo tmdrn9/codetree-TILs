@@ -5,7 +5,7 @@ def bfs(start, end):
     pq = deque([])
     path = [[[] for _ in range(M)] for _ in range(N)]
     pq.append(start)
-
+    path[start[0]][start[1]]=(start[0],start[1])
     while pq:
         ci, cj = pq.popleft()
         for dx,dy in zip(DX, DY):
