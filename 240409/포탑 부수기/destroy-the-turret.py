@@ -27,7 +27,8 @@ def bfs(start, end):
 N, M, K = map(int, input().split())
 plus = N + M
 grid = [list(map(int, input().split())) for _ in range(N)]
-li = []  # 공격순서넣는 list
+grid_t=[[-1]*M for _ in range(N)]
+
 for turn in range(1, K + 1):
     temp = [i for i in sum(grid, []) if i > 0]
     if len(temp) == 1:
@@ -41,11 +42,11 @@ for turn in range(1, K + 1):
             if grid[i][j] <= 0:
                 continue
             heapq.heappush(weak, (
-            grid[i][j], li[::-1].index((i,j)) if (i,j) in li else math.inf, -(i + j), -j, -i))
+            grid[i][j], -grid_t[i][j], -(i + j), -j, -i))
     _, _, _, attack_c, attack_r = heapq.heappop(weak)
 
     attack_c, attack_r = -attack_c, -attack_r
-    li.append((attack_r,attack_c))
+    grid_t[i][j]=turn
     contain.append((attack_r,attack_c))
     # n+m만큼의 공격력   증가
     grid[attack_r][attack_c] += plus
@@ -61,7 +62,7 @@ for turn in range(1, K + 1):
             if grid[i][j] <= 0 or (i == attack_r and j == attack_c):
                 continue
             heapq.heappush(strong,
-                            (-grid[i][j], li.index((i, j)) if (i, j) in li else -math.inf, (i + j), j, i))
+                            (-grid[i][j], grid_t[i][j], (i + j), j, i))
     _, _, _, loser_c, loser_r = heapq.heappop(strong)
 
     contain.append((loser_r,loser_c))
