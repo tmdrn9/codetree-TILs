@@ -34,9 +34,6 @@ def bfs_(x,y):
         for dx, dy in zip(DX, DY):
             nx,ny=x+dx,y+dy
             if in_range(nx,ny) and cp_grid[nx][ny]!=-1:
-                if (nx,ny)==(x,y):
-                    step[nx][ny] = step[x][y] + 1
-                    return (nx,ny)
                 cp_grid[nx][ny]=-1
                 step[nx][ny]=step[x][y]+1
                 q.append([nx,ny])
