@@ -53,7 +53,7 @@ for turn in range(1, K + 1):
             if in_range(nx,ny):
                 if (nx,ny)==(end_r,end_c):
                     del_.append(pp)
-                    grid[x][y]+=1
+                    grid[x][y]+=n
                     dist += n
                     break
                 if grid[nx][ny]<=0 and distance(end_r,end_c,nx,ny)<distance(end_r,end_c,x,y):
