@@ -4,12 +4,10 @@ DX,DY=[-1,0,0,1],[0,-1,1,0]
 
 def in_range(x,y):
     return 0<=x<N and 0<=y<N
-def bfs(x,y):
-    q=deque([[x,y]])
-    while q:
-        x,y=q.popleft()
 
 N,M=map(int,input().split())
+stop=[0]*(M+1)
+stop[0]=1
 m=[[-1,-1] for _ in range(M+1)]
 arrive=[[-1,-1] for _ in range(M+1)]
 grid=[list(map(int,input().split())) for _ in range(N)]
@@ -22,6 +20,8 @@ t=1
 while True:
     # 1 모두가 한칸씩 움직임 상좌우하 [-1,0,0,1],[0,-1,1,0]
     for i in range(1,min(t,M+1)):
+        if stop[i]==1:
+            continue
         x,y=m[i%N]
         ax,ay=arrive[i]
         for dx,dy in zip(DX,DY):
@@ -38,8 +38,11 @@ while True:
                 break
     # 2 도착하면 해당 편의점이 있는칸을 지나갈수 없게됨 -1로 표시하기
     for i in range(1,M+1):
+        if stop[i]==1:
+            continue
         if m[i]==arrive[i] and grid[m[i][0]][m[i][1]]==0:
             grid[m[i][0]][m[i][1]]=-1
+            stop[i]=1
 
     #3 만약 t<=m이면 t번 사람이 자기가 갈 편의점과 가장 가까이 있는 베캠으로 이동
     if t<M+1:
@@ -55,11 +58,7 @@ while True:
     if t<=M:
         t+=1
     else:
-        cnt=0
-        for i in range(1,M+1):
-            if m[i]==arrive[i]:
-                cnt+=1
-        if cnt<M:
+        if len(set(stop))!=1:
             t+=1
         else:
             break
