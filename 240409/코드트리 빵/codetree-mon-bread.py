@@ -8,8 +8,7 @@ def bfs(x,y):
     global grid
     cp_grid=[[0]*N for _ in range(N)]
     for i in range(N):
-        for j in range(N):
-            cp_grid[i][j]=grid[i][j]
+        cp_grid[i]=grid[i]
     q=deque([[x,y]])
     cp_grid[x][y]=-1
     while q:
