@@ -26,7 +26,7 @@ while True:
         ax,ay=arrive[i]
         for dx,dy in zip(DX,DY):
             nx,ny=x+dx,y+dy
-            if not in_range(nx,ny) and grid[nx][ny]==-1:
+            if not in_range(nx,ny) or grid[nx][ny]==-1:
                 continue
             if (abs(nx-ax)>abs(x-ax) or abs(ny-ay)>abs(y-ay)):
                 continue
