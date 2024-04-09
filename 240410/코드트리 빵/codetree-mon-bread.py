@@ -1,8 +1,5 @@
 import heapq,math
-import sys
 from collections import deque
-
-# sys.stdin=open("input.txt",'rt')
 DX,DY=[-1,0,0,1],[0,-1,1,0]
 
 def in_range(x,y):
@@ -21,10 +18,8 @@ def bfs(x,y):
             nx,ny=x+dx,y+dy
             if in_range(nx,ny) and cp_grid[nx][ny]!=-1:
                 if cp_grid[nx][ny]==1:
-                    step[nx][ny] = step[x][y] + 1
                     return (nx,ny)
                 cp_grid[nx][ny]=-1
-                step[nx][ny]=step[x][y]+1
                 q.append([nx,ny])
 def bfs_(x,y):
     global grid
@@ -46,7 +41,6 @@ def bfs_(x,y):
                 step[nx][ny]=step[x][y]+1
                 q.append([nx,ny])
 
-
 N,M=map(int,input().split())
 stop=[0]*(M+1)
 stop[0]=1
@@ -58,13 +52,13 @@ for i in range(1,M+1):
     arrive[i]=list(map(lambda x:int(x)-1,input().split()))
 t=0
 while len(set(stop))!=1:
-    step = [[225] * N for _ in range(N)]
-    visited = [[False] * N for _ in range(N)]
     # print(stop)
     t += 1
     del_=[]
     # 1 모두가 한칸씩 움직임 상좌우하 [-1,0,0,1],[0,-1,1,0]
     for i in range(1,min(t,M+1)):
+        step = [[255] * N for _ in range(N)]
+        visited = [[False] * N for _ in range(N)]
         if stop[i]==1:
             continue
         x,y=m[i]
@@ -79,13 +73,6 @@ while len(set(stop))!=1:
             if mm>step[nx][ny]:
                 mm=step[nx][ny]
                 fx, fy = nx, ny
-        #     dist=abs(nx-ax)+abs(ny-ay)
-        #     if dist==0:
-        #         fx, fy = nx, ny
-        #         break
-        #     if mm>dist:
-        #         mm=dist
-        #         fx,fy=nx,ny
         m[i]=[fx,fy]
 
         # 2 도착하면 해당 편의점이 있는칸을 지나갈수 없게됨 -1로 표시하기
