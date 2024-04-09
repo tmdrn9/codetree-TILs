@@ -27,7 +27,7 @@ def bfs(start, end):
 N, M, K = map(int, input().split())
 plus = N + M
 grid = [list(map(int, input().split())) for _ in range(N)]
-grid_t=[[-1]*M for _ in range(N)]
+grid_t = [[-1] * M for _ in range(N)]
 
 for turn in range(1, K + 1):
     temp = [i for i in sum(grid, []) if i > 0]
@@ -42,12 +42,12 @@ for turn in range(1, K + 1):
             if grid[i][j] <= 0:
                 continue
             heapq.heappush(weak, (
-            grid[i][j], -grid_t[i][j], -(i + j), -j, -i))
+                grid[i][j], -grid_t[i][j], -(i + j), -j, -i))
     _, _, _, attack_c, attack_r = heapq.heappop(weak)
 
     attack_c, attack_r = -attack_c, -attack_r
-    grid_t[attack_r][attack_c]=turn
-    contain.append((attack_r,attack_c))
+    grid_t[attack_r][attack_c] = turn
+    contain.append((attack_r, attack_c))
     # n+m만큼의 공격력   증가
     grid[attack_r][attack_c] += plus
     damage = grid[attack_r][attack_c]
@@ -64,8 +64,7 @@ for turn in range(1, K + 1):
             heapq.heappush(strong,
                             (-grid[i][j], grid_t[i][j], (i + j), j, i))
     _, _, _, loser_c, loser_r = heapq.heappop(strong)
-
-    contain.append((loser_r,loser_c))
+    contain.append((loser_r, loser_c))
     # 최단경로가 존재하면 레이저 아님 포탄공격
     what = bfs((attack_r, attack_c), (loser_r, loser_c))
     if what != -1:
@@ -85,15 +84,17 @@ for turn in range(1, K + 1):
         aDX, aDY = [-1, -1, 0, 1, 1, 1, 0, -1], [0, 1, 1, 1, 0, -1, -1, -1]
         for dxx, dyy in zip(aDX, aDY):
             loser_nr, loser_nc = loser_r + dxx, loser_c + dyy
+            if (loser_nr, loser_nc)==(attack_r,attack_c):
+                continue
             if 0 <= loser_nr < N and 0 <= loser_nc < M:
                 if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
-                    contain.append((loser_nr,loser_nc))
+                    contain.append((loser_nr, loser_nc))
             else:
                 loser_nr, loser_nc = loser_nr % N, loser_nc % M
                 if grid[loser_nr][loser_nc] != 0:
                     grid[loser_nr][loser_nc] -= half_damage
-                    contain.append((loser_nr,loser_nc))
+                    contain.append((loser_nr, loser_nc))
 
     ####공격끝####
     # 부서지지 않은 포탑중 공격자와 공격자대상빼고 포탄 공격력+1
@@ -101,7 +102,7 @@ for turn in range(1, K + 1):
         for j in range(M):
             if grid[i][j] < 0:
                 grid[i][j] = 0
-            if (i,j) in contain or grid[i][j] == 0:
+            if (i, j) in contain or grid[i][j] == 0:
                 continue
             grid[i][j] += 1
 print(max(sum(grid,[])))
