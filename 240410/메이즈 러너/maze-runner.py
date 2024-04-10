@@ -72,6 +72,7 @@ for turn in range(1,K+1):
     # 여러명 함께 가능
     add_=[]
     rm=[]
+    n_arr=[x[:] for x in grid]
     for pr,pc in location:
         new=move(pr,pc)
         if new==-1:
@@ -79,14 +80,14 @@ for turn in range(1,K+1):
         else:
             rm.append((pr,pc))
             add_.append(new)
-            s=grid[pr][pc]
-            cnt += -s
-            grid[pr][pc]=0
-            grid[new[0]][new[1]]+=s
+            cnt += -grid[pr][pc]
+            n_arr[new[0]][new[1]]+= grid[pr][pc]
+            n_arr[pr][pc]-= grid[pr][pc]
     for i in range(len(add_)):
         location.append(add_[i])
     for i in range(len(rm)):
         location.remove(rm[i])
+    grid=n_arr
 
     location = list(set(location))
     if (exitr,exitc) in location:
