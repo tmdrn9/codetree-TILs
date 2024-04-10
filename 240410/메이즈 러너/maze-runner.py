@@ -76,10 +76,10 @@ for turn in range(1,K+1):
         if new==-1:
             continue
         else:
-            cnt +=1
             rm.append((pr,pc))
             add_.append(new)
             s=grid[pr][pc]
+            cnt += -s
             grid[pr][pc]=0
             grid[new[0]][new[1]]+=s
     for i in range(len(add_)):
