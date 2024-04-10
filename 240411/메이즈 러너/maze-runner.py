@@ -27,14 +27,14 @@ def move(r,c):
 
 def select_box():
     mdist = math.inf
-    idx=-1
+    fr,fc=-1,-1
     # 가장 가까운 사람찾기
     for i,(pr, pc) in enumerate(location):
         p_dist = distance(pr, pc, exitr, exitc)
         if p_dist < mdist:
             mdist = p_dist
-            idx=i
-    width = max(abs(location[idx][1] - exitc), abs(location[idx][0] - exitr))
+            fr,fc=pr, pc
+    width = max(abs(fc - exitc), abs(fr - exitr))
     for i in range(N-width):
         for j in range(N-width):
             if i<=exitr<=i+width and j<=exitc<=j+width:
