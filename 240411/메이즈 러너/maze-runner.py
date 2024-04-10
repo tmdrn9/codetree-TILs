@@ -23,31 +23,33 @@ def move(r,c):
     return -1
 
 def select_box():
-    mdist = math.inf
-    fr,fc=-1,-1
-    # 가장 가까운 사람찾기
-    for pr, pc in [(i,j) for i in range(N) for j in range(N) if grid[i][j]<0]:
-        p_dist = distance(pr, pc, exitr, exitc)
-        if p_dist < mdist:
-            mdist = p_dist
-            fr,fc = pr, pc
-    width = max(abs(fc - exitc), abs(fr - exitr))
-    for i in range(N-width):
-        for j in range(N-width):
-            if i<=exitr<=i+width and j<=exitc<=j+width:
-                for ni in range(i,i+width+1):
-                    for nj in range(j,j+width+1):
+    mn = N
+    for i in range(N):
+        for j in range(N):
+            if grid[i][j] < 0:  # 사람인 경우
+                mn = min(mn, max(abs(exitr - i), abs(exitc - j)))
+
+    for i in range(N-mn):
+        for j in range(N-mn):
+            if i<=exitr<=i+mn and j<=exitc<=j+mn:
+                for ni in range(i,i+mn+1):
+                    for nj in range(j,j+mn+1):
                         if grid[ni][nj]<0:
-                            return width+1,i,j
+                            return mn+1,i,j
+def find_exit(arr):
+    for i in range(N):
+        for j in range(N):
+            if arr[i][j]>9:
+                return i,j
 
 
 cnt=0
 N, M, K=map(int,input().split())
 grid=[list(map(int,input().split())) for _ in range(N)]
 for _ in range(M):
-    x,y=map(lambda x:int(x)-1,input().split())
+    x,y=map(lambda x:int(x)-1, input().split())
     grid[x][y]-=1
-exitr,exitc=map(lambda x:int(x)-1,input().split())
+exitr,exitc=map(lambda x:int(x)-1, input().split())
 grid[exitr][exitc] = 1000
 arrive=0
 n_arr=[x[:] for x in grid]
@@ -62,34 +64,27 @@ for turn in range(1,K+1):
         if new == -1:
             continue
         else:
-            cnt += -grid[pr][pc]
+            cnt -= grid[pr][pc]
             n_arr[new[0]][new[1]] += grid[pr][pc]
             n_arr[pr][pc] -= grid[pr][pc]
             if new==(exitr,exitc):
-                arrive+= -grid[pr][pc]
-
+                arrive-= grid[pr][pc]
     grid = n_arr
+
     # 모든 참가자가 도착했는지 확인해서 다 도착하면 끛
     if arrive==M:
         break
-        
+
     # 출구와 한명이상 포함하는 가장작은 정사각형 잡기
     width, bx, by=select_box()
-    temp=[[0]*width for _ in range(width)]
-    for i in range(width):
-        for j in range(width):
-            temp[i][j]=grid[bx+i][by+j]
 
     #90도 회전
     n_arr = [x[:] for x in grid]
     rotate90(width, bx, by)
     grid=n_arr
 
-    for i in range(N):
-        for j in range(N):
-            if grid[i][j]> 9:
-                exitr,exitc=i, j
-                break
+    exitr,exitc=find_exit(grid)
+
 
 
 # 모든 참가자들의 이동거리 합과 출구 좌표를 출력
