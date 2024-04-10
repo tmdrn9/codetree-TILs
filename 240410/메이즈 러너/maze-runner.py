@@ -60,11 +60,12 @@ grid=[list(map(int,input().split())) for _ in range(N)]
 location=[]
 for _ in range(M):
     x,y=map(lambda x:int(x)-1,input().split())
-    grid[x][y]=-1
+    grid[x][y]+=-1
     location.append((x,y))
 exitr,exitc=map(lambda x:int(x)-1,input().split())
 grid[exitr][exitc] = 1000
 arrive=0
+location = list(set(location))
 for turn in range(1,K+1):
 
     # 사람 한명씩 다 움직이기(벽 없는 곳으로), 움직일 수 없으면 안움직임
