@@ -7,44 +7,13 @@ def distance(x1,y1,x2,y2):
 def hello_runner(d):
     global score
     answer=[]
-    if d==0:#위
-        sx= 0 if x-3<0 else x-3
-        for i in range(sx,x+1):
-            if grid[i][y]==-1:
-                continue
-            if p_grid[i][y]>0:
-                score+=turn*p_grid[i][y]
-                p_grid[i][y]=0
-                answer.append((i,y))
-    elif d==1: #오
-        sy = n-1 if y + 3 >= n else y + 3
-        for i in range(y, sy + 1):
-            if grid[x][i] == -1:
-                continue
-            if p_grid[x][i] > 0:
-                score += turn * p_grid[x][i]
-                p_grid[x][i] = 0
-                answer.append((x,i))
-    elif d==2: #아
-        sx = n-1 if x + 3 >= n else x + 3
-        for i in range(x, sx + 1):
-            if grid[i][y] == -1:
-                continue
-            if p_grid[i][y] > 0:
-                score += turn * p_grid[i][y]
-                p_grid[i][y] = 0
-                answer.append((i, y))
-    else: #왼
-        sy = 0 if y - 3 < 0 else y - 3
-        for i in range(sy, y + 1):
-            if grid[x][i] == -1:
-                continue
-            if p_grid[x][i] > 0:
-                score += turn * p_grid[x][i]
-                p_grid[x][i] = 0
-                answer.append((x, i))
-    return answer
+    check=[(x,y),(x+MX[d],y+MY[d]),(x+MX[d]*2,y+MY[d]*2)]
 
+    for r in runner:
+        if r in check and grid[r[0]][r[1]]==0:
+            p_grid[r[0]][r[1]] = 0
+            answer.append((r[0],r[1]))
+    return answer
 
 
 MX,MY=[-1,0,1,0],[0,1,0,-1] #슐래 토네이도
