@@ -9,7 +9,9 @@ def hello_runner(d):
     answer=[]
     check=[(x,y),(x+MX[d],y+MY[d]),(x+MX[d]*2,y+MY[d]*2)]
 
-    for r in runner:
+    for i, r in enumerate(runner):
+        if i in rm:
+            continue
         if r in check and grid[r[0]][r[1]]==0:
             score+=t
             p_grid[r[0]][r[1]] = 0
