@@ -10,8 +10,6 @@ def hello_runner(d):
     check=[(x,y),(x+MX[d],y+MY[d]),(x+MX[d]*2,y+MY[d]*2)]
 
     for i, r in enumerate(runner):
-        if i in rm:
-            continue
         if r in check and grid[r[0]][r[1]]==0:
             score+=t
             p_grid[r[0]][r[1]] = 0
@@ -47,7 +45,7 @@ total = 0
 t_dist = 0
 visited=[[False]*n for _ in range(n)]
 visited[0][0] =True
-rm=[]
+rm=set([])
 # k번 반복
 for turn in range(1,k+1):
 
@@ -121,7 +119,7 @@ for turn in range(1,k+1):
     rm_li=hello_runner(idx)
     for i in range(len(runner)):
         if runner[i] in rm_li:
-            rm.append(i)
+            rm.add(i)
     if len(rm)==m:
         break
 print(score)
