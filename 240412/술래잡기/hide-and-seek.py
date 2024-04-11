@@ -11,7 +11,7 @@ def hello_runner(d):
 
     for r in runner:
         if r in check and grid[x][y]==0:
-            score=p_grid[r[0]][r[1]]*turn
+            score+=p_grid[r[0]][r[1]]*turn
             p_grid[r[0]][r[1]] = 0
             answer.append((r[0],r[1]))
     return answer
