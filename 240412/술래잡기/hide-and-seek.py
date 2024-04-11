@@ -95,7 +95,7 @@ for turn in range(1,k+1):
         t_dist+=1
         if (x, y) == (0, 0):
             inout=1
-            total,dist,t,idx=0,1,0,2
+            t_dist,total,dist,t,idx=0,0,1,0,2
         else:
             if t_dist==dist:
                 idx = (idx + 1) % 4
