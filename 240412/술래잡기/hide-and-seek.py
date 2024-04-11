@@ -17,7 +17,7 @@ def hello_runner(d):
                 p_grid[i][y]=0
                 answer.append((i,y))
     elif d==1: #오
-        sy = n-1 if y + 3 >= n else x + 3
+        sy = n-1 if y + 3 >= n else y + 3
         for i in range(y, sy + 1):
             if grid[x][i] == -1:
                 continue
@@ -73,6 +73,7 @@ t = 0
 total = 0
 t_dist = 0
 visited=[[False]*n for _ in range(n)]
+visited[0][0] =True
 rm=[]
 # k번 반복
 for turn in range(1,k+1):
@@ -133,14 +134,15 @@ for turn in range(1,k+1):
                 dist+=1
     #밖에서 안으로
     else:
-        x, y = x + MX[idx], y + MX[idx]
+        x, y = x + MX[idx], y + MY[idx]
+        visited[x][y]=True
         if (x, y) == (n//2, n//2):
             visited = [[False] * n for _ in range(n)]
             visited[0][0]=True
             idx=0
             inout=0
         else:
-            if visited[x + MX[idx]][y + MY[idx]] or in_range(x + MX[idx], y + MY[idx])==False:
+            if in_range(x + MX[idx], y + MY[idx])==False or visited[x + MX[idx]][y + MY[idx]]:
                 idx=(idx-1)%4
 
     rm_li=hello_runner(idx)
@@ -148,8 +150,3 @@ for turn in range(1,k+1):
         if runner[i] in rm_li:
             rm.append(i)
 print(score)
-
-    ## 토네이도로 한칸 움직임
-    ### 바라보고 있는 방향기준으로 현재칸 포함해 3칸 내에 있는 도망자 잡기
-    ### 나무와 같이 있는 도망자는 안잡힘
-    ### 도망자 잡으면 현재 턴t*잡은도망자수만큼 점수획득
