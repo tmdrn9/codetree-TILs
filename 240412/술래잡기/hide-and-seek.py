@@ -10,7 +10,8 @@ def hello_runner(d):
     check=[(x,y),(x+MX[d],y+MY[d]),(x+MX[d]*2,y+MY[d]*2)]
 
     for r in runner:
-        if r in check and grid[r[0]][r[1]]==0:
+        if r in check and grid[x][y]==0:
+            score=p_grid[r[0]][r[1]]*turn
             p_grid[r[0]][r[1]] = 0
             answer.append((r[0],r[1]))
     return answer
