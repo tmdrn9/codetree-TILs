@@ -13,7 +13,7 @@ def hello_runner(d):
         if r in check and grid[r[0]][r[1]]==0:
             score+=t
             p_grid[r[0]][r[1]] = 0
-            answer.append((r[0],r[1]))
+            answer.append(r)
     return answer
 
 
@@ -95,7 +95,7 @@ for turn in range(1,k+1):
         t_dist+=1
         if (x, y) == (0, 0):
             inout=1
-            total,dist,t,idx=0,0,0,2
+            total,dist,t,idx=0,1,0,2
         else:
             if t_dist==dist:
                 idx = (idx + 1) % 4
