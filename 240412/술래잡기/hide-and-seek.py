@@ -13,7 +13,7 @@ def hello_runner(d):
             if grid[i][y]==-1:
                 continue
             if p_grid[i][y]>0:
-                score+=t*p_grid[i][y]
+                score+=turn*p_grid[i][y]
                 p_grid[i][y]=0
                 answer.append((i,y))
     elif d==1: #오
@@ -22,7 +22,7 @@ def hello_runner(d):
             if grid[x][i] == -1:
                 continue
             if p_grid[x][i] > 0:
-                score += t * p_grid[x][i]
+                score += turn * p_grid[x][i]
                 p_grid[x][i] = 0
                 answer.append((x,i))
     elif d==2: #아
@@ -31,7 +31,7 @@ def hello_runner(d):
             if grid[i][y] == -1:
                 continue
             if p_grid[i][y] > 0:
-                score += t * p_grid[i][y]
+                score += turn * p_grid[i][y]
                 p_grid[i][y] = 0
                 answer.append((i, y))
     else: #왼
@@ -40,7 +40,7 @@ def hello_runner(d):
             if grid[x][i] == -1:
                 continue
             if p_grid[x][i] > 0:
-                score += t * p_grid[x][i]
+                score += turn * p_grid[x][i]
                 p_grid[x][i] = 0
                 answer.append((x, i))
     return answer
