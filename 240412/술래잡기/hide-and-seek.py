@@ -120,4 +120,6 @@ for turn in range(1,k+1):
     for i in range(len(runner)):
         if runner[i] in rm_li:
             rm.append(i)
+    if len(rm)==m:
+        break
 print(score)
