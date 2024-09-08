@@ -7,5 +7,6 @@ for _ in range(m):
     li[t]+=1
     if max(li)==k:
         ans=li.index(k)
+        break
 
 print(ans)
