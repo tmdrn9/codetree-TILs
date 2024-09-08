@@ -11,4 +11,6 @@ for i in range(n-1):
             ans=cnt
         cnt=1
     temp=now
+if ans<cnt:
+    ans=cnt
 print(ans)
