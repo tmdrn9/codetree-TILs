@@ -1,6 +1,6 @@
 n=int(input())
 temp=int(input())
-ans=-1
+ans=1
 cnt=1
 for i in range(n-1):
     now=int(input())
