@@ -1,4 +1,4 @@
-dx,dy=[1,0,-1,0],[0,1,0,-1]
+dx,dy=[0, 1, -1, 0], [1, 0, 0, -1]
 di = {}  # dict 초기화
 di['R'] = 0
 di['D'] = 1
@@ -20,5 +20,5 @@ for _ in range(t):
     if in_range(tx,ty):
         r,c=tx,ty
     else:
-        d=abs(2-d)
+        d=3-d
 print(r,c)
