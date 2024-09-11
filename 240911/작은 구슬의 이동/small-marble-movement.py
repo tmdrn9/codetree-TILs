@@ -20,5 +20,5 @@ for _ in range(t):
     if in_range(tx,ty):
         r,c=tx,ty
     else:
-        d=2-d
+        d=abs(2-d)
 print(r,c)
