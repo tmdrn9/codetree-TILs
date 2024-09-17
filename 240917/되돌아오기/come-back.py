@@ -6,17 +6,22 @@ dic={'E':0,
     'N':3}
 n=int(input())
 cnt=0
-for _ in range(n):
-    d,m=input().split()
+
+def mov(d,m):
+    global cnt, r, c
     for _ in range(int(m)):
         r,c=r+dr[dic[d]],c+dc[dic[d]]
         cnt+=1
         if (r,c)==(0,0):
-            break
-    if (r,c)==(0,0):
-            break
+            return True
+    return False
 
-if (r,c)==(0,0):
+for _ in range(n):
+    d,m=input().split()
+    check= mov(d,m)
+    if check:
+        break
+if check:
     print(cnt)
 else:
     print(-1)
