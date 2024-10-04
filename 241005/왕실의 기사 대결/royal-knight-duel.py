@@ -41,7 +41,7 @@ def bfs(i,d):
         if not in_range(newr,newc) or grid[newr][newc]==2:
             return 0
         else:
-            if not visited[newr][newc] and p_grid[newr][newc]!=0:
+            if not visited[newr][newc] and p_grid[newr][newc]!=0 and p_grid[newr][newc]!=i:
                 visited[newr][newc]=1
                 add_i(p_grid[newr][newc])
                 m_i.add(p_grid[newr][newc])
