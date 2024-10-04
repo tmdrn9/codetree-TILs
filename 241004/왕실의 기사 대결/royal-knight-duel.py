@@ -1,6 +1,5 @@
 from collections import deque
 import heapq
-
 #0, 1, 2, 3 중에 하나이며 각각 위쪽, 오른쪽, 아래쪽, 왼쪽
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
@@ -11,14 +10,14 @@ def damege(d_li):
     for i in d_li:
         r,c,h,w,k=p[i]
         for hh in range(h):
-            if p[i][4]>0:
+            if grid[r+hh][c]==1 and p[i][4]>0:
                 p[i][4]-=1
                 p_d[i]+=1
         for ww in range(w):
-            if p[i][4]>0:
+            if grid[r][c+ww]==1 and p[i][4]>0:
                 p[i][4]-=1
                 p_d[i]+=1
-        if p[i][4]<=0:
+        if p[i][4]<0:
             for row in p_grid[r:r + h]:
                 row[c:c + w] = [0] * w
 
@@ -31,7 +30,7 @@ def bfs(i,d):
         for ww in range(1,w):
             q.append((r,c+ww))
 
-    m_i=[]
+    m_i=set([])
     add_i(i)
     visited=[[0]*L for _ in range(L)]
     while q:
@@ -43,15 +42,16 @@ def bfs(i,d):
             if not visited[newr][newc] and p_grid[newr][newc]!=0:
                 visited[newr][newc]=1
                 add_i(p_grid[newr][newc])
-                m_i.append(p_grid[newr][newc])
+                m_i.add(p_grid[newr][newc])
 
-    for m in m_i[::-1]+[i]:
-        r,c,h,w,_=p[m]
+    for m in list(m_i)[::-1]+[i]:
+        r,c,h,w,k=p[m]
         for row in p_grid[r:r+h]:
             row[c:c+w]=[0]*w
         pr,pc=r+dxs[d],c+dys[d]
         for row in p_grid[pr:pr+h]:
             row[pc:pc+w]=[m]*w
+        p[m]=[pr,pc,h,w,k]
     return m_i
 
 
