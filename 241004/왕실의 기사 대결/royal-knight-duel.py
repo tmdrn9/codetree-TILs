@@ -1,6 +1,7 @@
 from collections import deque
 import heapq
 
+
 #0, 1, 2, 3 중에 하나이며 각각 위쪽, 오른쪽, 아래쪽, 왼쪽
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
