@@ -1,7 +1,6 @@
 from collections import deque
 import heapq
 
-
 #0, 1, 2, 3 중에 하나이며 각각 위쪽, 오른쪽, 아래쪽, 왼쪽
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
@@ -76,6 +75,7 @@ k=[list(map(int,input().split())) for _ in range(Q)]
 p_d=[0]*(len(p)+1)
 
 for i,d in k:
+    #print(p_grid)
     # i번 기사에게 방향 d로 한 칸 이동하라는 명령
     #체스판에서 사라진 기사에게 명령을 내리면 아무런 반응이 없게 됩니다.
     if p[i][4]<=0:
@@ -90,7 +90,7 @@ for i,d in k:
 
     #print(p_grid)
 answer=0
-for n in range(1,N):
+for n in range(1,N+1):
     if p[n][4]>0:
         answer+=p_d[n]
 print(answer)
