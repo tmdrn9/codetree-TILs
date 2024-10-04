@@ -1,5 +1,6 @@
 from collections import deque
 import heapq
+
 #0, 1, 2, 3 중에 하나이며 각각 위쪽, 오른쪽, 아래쪽, 왼쪽
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
@@ -86,6 +87,7 @@ for i,d in k:
     if d_li !=0:
         damege(d_li)
 
+    #print(p_grid)
 answer=0
 for n in range(1,N):
     if p[n][4]>0:
