@@ -1,101 +1,91 @@
 from collections import deque
-import heapq
 
+di = [-1, 0, 1, 0]
+dj = [ 0, 1, 0,-1]
 
+N, M, Q = map(int, input().split())
+# 벽으로 둘러싸서, 범위체크 안하고, 범위밖으로 밀리지 않게 처리
+arr = [[2]*(N+2)]+[[2]+list(map(int, input().split()))+[2] for _ in range(N)]+[[2]*(N+2)]
+units = {}
+# v = [[0]*(N+2) for _ in range(N+2)] # 디버거로 동작확인용
+init_k = [0]*(M+1)
+for m in range(1, M+1):
+    si,sj,h,w,k=map(int, input().split())
+    units[m]=[si,sj,h,w,k]
+    init_k[m]=k                 # 초기 체력 저장(ans 처리용)
+    # for i in range(si,si+h):    # 디버그용(제출시 삭제 가능)
+    #     v[i][sj:sj+w]=[m]*w
 
-#0, 1, 2, 3 중에 하나이며 각각 위쪽, 오른쪽, 아래쪽, 왼쪽
-dxs,dys=[-1,0,1,0],[0,1,0,-1]
+def push_unit(start, dr):       # s를 밀고, 연쇄처리..
+    q = deque()                      # push 후보를 저장
+    pset = set()                # 이동 기사번호 저장
+    damage = [0]*(M+1)          # 각 유닛별 데미지 누적
 
-def in_range(x,y):
-    return 0<=x and x<L and 0<=y and y<L
+    q.append(start)             # 초기데이터 append
+    pset.add(start)
 
-def damege(d_li):
-    for i in d_li:
-        r,c,h,w,k=p[i]
-        for hh in range(h):
-            if grid[r+hh][c]==1 and p[i][4]>0:
-                p[i][4]-=1
-                p_d[i]+=1
-        for ww in range(1,w):
-            if grid[r][c+ww]==1 and p[i][4]>0:
-                p[i][4]-=1
-                p_d[i]+=1
-        if p[i][4]<0:
-            for row in p_grid[r:r + h]:
-                row[c:c + w] = [0] * w
-
-def bfs(i,d):
-    global p_grid
-    q=deque([])
-    def add_i(i):
-        r,c,h,w,k=p[i]
-        for hh in range(h):
-            q.append((r+hh,c))
-        for ww in range(1,w):
-            q.append((r,c+ww))
-
-    m_i=set([])
-    add_i(i)
-    visited=[[0]*L for _ in range(L)]
     while q:
-        r,c=q.popleft()
-        newr,newc=r+dxs[d],c+dys[d]
-        if not in_range(newr,newc) or grid[newr][newc]==2:
-            return 0
+        cur = q.popleft()          # q에서 데이터 한개 꺼냄
+        ci,cj,h,w,k = units[cur]
+
+        # 명령받은 방향진행, 벽이아니면, 겹치는 다른조각이면 => 큐에 삽입
+        ni,nj=ci+di[dr], cj+dj[dr]
+        for i in range(ni, ni+h):
+            for j in range(nj, nj+w):
+                if arr[i][j]==2:    # 벽!! => 모두 취소
+                    return
+                if arr[i][j]==1:    # 함정인 경우
+                    damage[cur]+=1  # 데미지 누적
+
+        # 겹치는 다른 유닛있는 경우 큐에 추가(모든 유닛 체크)
+        for idx in units:
+            if idx in pset: continue    # 이미 움직일 대상이면 체크할 필요없음
+
+            ti,tj,th,tw,tk=units[idx]
+            # 겹치는 경우
+            if ni<=ti+th-1 and ni+h-1>=ti and tj<=nj+w-1 and nj<=tj+tw-1:
+                q.append(idx)
+                pset.add(idx)
+
+            # 겹치지 않는 경우 (이 반대가 확실히 겹치는지 따져보고 사용해야 함)
+            # if ni>ti+th-1 or ni+h-1<ti or nj+w-1<tj or nj>tj+tw-1:
+            #     pass
+            # else:
+            #     q.append(idx)
+            #     pset.add(idx)
+
+            # 상 우 하 좌 (닿는 경우.. 복잡함)
+            # if ((ni==ti+th-1 or ni+h-1==ti) and (tj<=nj<tj+tw or tj<=nj+w-1<tj+tw or nj<=tj<nj+w or nj<=tj+tw-1<nj+w)) or \
+            #         ((nj==tj+tw-1 or nj+w-1==tj) and (ti<=ni<ti+th or ti<=ni+h-1<ti+th or ni<=ti<ni+h or ni<=ti+th-1<ni+h)):
+            #     q.append(idx)
+            #     pset.add(idx)
+
+    # 명령 받은 기사는 데미지 입지 않음
+    damage[start]=0
+
+    # for idx in pset:
+    #     si,sj,h,w,k = units[idx]
+    #     for i in range(si, si + h):
+    #         v[i][sj:sj + w] = [0] * w  # 기존위치 지우기
+
+    # 이동, 데미지가 체력이상이면 삭제처리
+    for idx in pset:
+        si,sj,h,w,k = units[idx]
+
+        if k<=damage[idx]:  # 체력보다 더 큰 데미지면 삭제
+            units.pop(idx)
         else:
-            if not visited[newr][newc] and p_grid[newr][newc]!=0 and p_grid[newr][newc]!=i:
-                visited[newr][newc]=1
-                add_i(p_grid[newr][newc])
-                m_i.add(p_grid[newr][newc])
+            ni,nj=si+di[dr], sj+dj[dr]
+            units[idx]=[ni,nj,h,w,k-damage[idx]]
+            # for i in range(ni,ni+h):
+            #     v[i][nj:nj+w]=[idx]*w     # 이동위치에 표시
 
-    for m in list(m_i)[::-1] + [i]:
-        r,c,_,_,_=p[m]
-        pr, pc = r + dxs[d], c + dys[d]
-        p[m][0], p[m][1] = pr, pc
-    temp = [[0] * L for _ in range(L)]
-    for i in range(N):
-        r, c, h, w, _ = p[i]
-        for row in temp[r:r + h]:
-            row[c:c + w] = [i + 1] * w
-    p_grid = temp
-    return m_i
+for _ in range(Q):  # 명령 입력받고 처리(있는 유닛만 처리)
+    idx, dr = map(int, input().split())
+    if idx in units:
+        push_unit(idx, dr)      # 명령받은 기사(연쇄적으로 밀기: 벽이 없는 경우)
 
-
-
-
-
-
-#체스판크기, 초기 기사 정보, 왕의 명령
-L, N, Q = map(int,input().split())
-grid=[list(map(int,input().split())) for _ in range(L)]
-p_grid=[[0]*L for _ in range(L)]
-p=[[0,0,0,0,0]]
-for i in range(N):
-    r,c,h,w,k=map(int,input().split())
-    p.append([r-1,c-1,h,w,k])
-    for row in p_grid[r-1:r -1 + h]:
-        row[c-1 :c -1 + w] = [i+1]*w
-
-
-k=[list(map(int,input().split())) for _ in range(Q)]
-p_d=[0]*(len(p)+1)
-
-for i,d in k:
-    # i번 기사에게 방향 d로 한 칸 이동하라는 명령
-    #체스판에서 사라진 기사에게 명령을 내리면 아무런 반응이 없게 됩니다.
-    if p[i][4]<=0:
-        continue
-
-    # 명령 실행
-    d_li=bfs(i,d)
-    #print(p_grid)
-    #데미지
-    if d_li !=0:
-        damege(d_li)
-
-
-answer=0
-for n in range(1,N+1):
-    if p[n][4]>0:
-        answer+=p_d[n]
-print(answer)
+ans = 0
+for idx in units:
+    ans += init_k[idx]-units[idx][4]
+print(ans)
