@@ -24,6 +24,7 @@ def damege(d_li):
                 row[c:c + w] = [0] * w
 
 def bfs(i,d):
+    global p_grid
     q=deque([])
     def add_i(i):
         r,c,h,w,k=p[i]
@@ -46,15 +47,18 @@ def bfs(i,d):
                 add_i(p_grid[newr][newc])
                 m_i.add(p_grid[newr][newc])
 
-    for m in list(m_i)[::-1]+[i]:
-        r,c,h,w,k=p[m]
-        for row in p_grid[r:r+h]:
-            row[c:c+w]=[0]*w
-        pr,pc=r+dxs[d],c+dys[d]
-        for row in p_grid[pr:pr+h]:
-            row[pc:pc+w]=[m]*w
-        p[m]=[pr,pc,h,w,k]
+    for m in list(m_i)[::-1] + [i]:
+        r,c,_,_,_=p[m]
+        pr, pc = r + dxs[d], c + dys[d]
+        p[m][0], p[m][1] = pr, pc
+    temp = [[0] * L for _ in range(L)]
+    for i in range(N):
+        r, c, h, w, _ = p[i]
+        for row in temp[r:r + h]:
+            row[c:c + w] = [i + 1] * w
+    p_grid = temp
     return m_i
+
 
 
 
