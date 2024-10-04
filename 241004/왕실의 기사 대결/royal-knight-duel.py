@@ -5,7 +5,7 @@ import heapq
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
 def in_range(x,y):
-    return 0<=x and x<L and 1<=y and y<L
+    return 0<=x and x<L and 0<=y and y<L
 
 def damege(d_li):
     for i in d_li:
