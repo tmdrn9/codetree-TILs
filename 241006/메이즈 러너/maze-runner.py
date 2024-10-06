@@ -78,16 +78,16 @@ def rotate_square():
     q=[]
     for idx in range(len(unit)):
         r,c=unit[idx]
-        side=max(abs(r-exit[0])+1,abs(c-exit[1])+1) #변의 크기
+        side=max(abs(r-exit[0]),abs(c-exit[1])) #변의 크기
         if r==exit[0]:
-            sr= 0 if r-side-1<=0 else r-side-1
+            sr= 0 if r-side<=0 else r-side
             sc= min(c,exit[1])
         elif c==exit[1]:
             sr=min(r,exit[0])
-            sc= 0 if c-side-1<=0 else c-side-1
+            sc= 0 if c-side<=0 else c-side
         else:
             sr,sc=min(r,exit[0]),min(c,exit[1])
-        heapq.heappush(q,(side,sr,sc))
+        heapq.heappush(q,(side+1,sr,sc))
     side,sr,sc=heapq.heappop(q)
     rotate90(side,sr,sc)
 
