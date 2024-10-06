@@ -13,8 +13,10 @@ grid=[list(map(int,input().split())) for _ in range(N)]
 for i in range(M):
     r,c=map(lambda x: int(x) - 1, input().split())
     grid[r][c]-=1
+
 exit=tuple(map(lambda x: int(x)-1,input().split()))
 grid[exit[0]][exit[1]]=-11
+
 ans=0
 
 def min_dist(x1,x2,y1,y2):
@@ -25,7 +27,7 @@ def unit_move():
     #움직일 수 있는 칸이 2개 이상이라면, 상하로 움직이는 것을 우선시합니다.
     ##출구 도착시 바로 탈출
     global ans,grid,cnt
-    temp=[list(map(lambda x: x if x>=0 else 0, row)) for row in grid]
+    temp=[row[:] for row in grid]
     for i in range(N):
         for j in range(N):
             if grid[i][j]<0:
@@ -33,18 +35,14 @@ def unit_move():
                 mm=min_dist(i,exit[0],j,exit[1])
                 for dx,dy in zip(dxs,dys):
                     tr,tc=i+dx,j+dy
-                    if can_go(tr,tc):
-                        if min_dist(tr,exit[0],tc,exit[1])<mm:
-                            b=True
-                            break
-                if b:
-                    ans-=grid[i][j]
-                    if (tr, tc)!= exit:
-                        temp[tr][tc]+=grid[i][j]
-                    else:
-                        cnt+=grid[i][j]
-                else:
-                    temp[i][j]=grid[i][j]
+                    if can_go(tr,tc) and min_dist(tr,exit[0],tc,exit[1])<mm:
+                        ans-=grid[i][j]
+                        temp[i][j]-=grid[i][j]
+                        if (tr, tc)!= exit:
+                            temp[tr][tc]+=grid[i][j]
+                        else:
+                            cnt+=grid[i][j]
+                        break
     grid=temp
 def rotate90(dist,sr,sc):
     global grid, exit
@@ -82,9 +80,9 @@ def rotate_square():
     side,i,j=heapq.heappop(q)
     rotate90(side,i,j)
 
-
 cnt=M
 for kk in range(K):
+    print(kk)
 
     #1모두 한칸씩 움직이기
     unit_move()
