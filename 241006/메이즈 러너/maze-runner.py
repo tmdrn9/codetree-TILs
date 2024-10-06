@@ -80,11 +80,11 @@ def rotate_square():
         r,c=unit[idx]
         side=max(abs(r-exit[0])+1,abs(c-exit[1])+1) #변의 크기
         if r==exit[0]:
-            sr= 0 if r-side<=0 else r-side
+            sr= 0 if r-side-1<=0 else r-side-1
             sc= min(c,exit[1])
         elif c==exit[1]:
             sr=min(r,exit[0])
-            sc= 0 if c-side<=0 else c-side
+            sc= 0 if c-side-1<=0 else c-side-1
         else:
             sr,sc=min(r,exit[0]),min(c,exit[1])
         heapq.heappush(q,(side,sr,sc))
