@@ -67,11 +67,11 @@ def rotate90(dist,sr,sc):
             if result[sr+j][sc+dist - i - 1] > 0:
                 result[sr+j][sc+dist - i - 1] -= 1
             # 정사각형 안에 unit 있으면 위치변경
-            if (sr+i,sc+j) in unit:
+            elif (sr+i,sc+j) in unit:
                 rm.append((sr+i,sc+j))
                 ap.append((sr+j,sc+dist - i - 1))
             #정사각형 안에 출구 있으면 위치변경
-            if (sr+i,sc+j) ==exit:
+            elif (sr+i,sc+j) ==exit:
                 temp_exit=(sr+j,sc+dist - i - 1)
     for r,c in rm:
         unit.remove((r,c))
@@ -90,20 +90,12 @@ def rotate_square():
         side=max(abs(r-exit[0]),abs(c-exit[1])) #변의 크기
         if r <= exit[0]:
             sr = 0 if exit[0] - side <= 0 else exit[0] - side
-        elif r > exit[0]:
+        else:
             sr = exit[0]
         if c <= exit[1]:
             sc = 0 if exit[1] - side <= 0 else exit[1] - side
-        elif c > exit[1]:
+        else:
             sc = exit[1]
-        # if r==exit[0]:
-        #     sr= 0 if r-side<=0 else r-side
-        #     sc= min(c,exit[1])
-        # elif c==exit[1]:
-        #     sr=min(r,exit[0])
-        #     sc= 0 if c-side<=0 else c-side
-        # else:
-        #     sr,sc=min(r,exit[0]),min(c,exit[1])
         heapq.heappush(q,(side+1,sr,sc))
     side,i,j=heapq.heappop(q)
 
