@@ -1,121 +1,90 @@
-import heapq,math
+import heapq
+from collections import deque
 
-DX,DY=[-1,1,0,0],[0,0,-1,1]
+dxs,dys=[-1,1,0,0],[0,0,-1,1] #상하좌우
 
-def distance(x1,y1,x2,y2):
+def can_go(x,y):
+    return 0<=x and x<N and 0<=y and y<N and grid[x][y]<=0
+
+
+N, M, K= map(int,input().split())
+grid=[list(map(int,input().split())) for _ in range(N)]
+for i in range(M):
+    r,c=map(lambda x: int(x) - 1, input().split())
+    grid[r][c]-=1
+
+exit=tuple(map(lambda x: int(x)-1,input().split()))
+grid[exit[0]][exit[1]]=-11
+
+ans=0
+
+def min_dist(x1,x2,y1,y2):
     return abs(x1-x2)+abs(y1-y2)
 
-def in_range(x,y):
-    return 0<=x<N and 0<=y<N
+def unit_move():
+    ## 움직인 칸은 현재 머물러 있던 칸보다 출구까지의 최단 거리가 가까워야함
+    #움직일 수 있는 칸이 2개 이상이라면, 상하로 움직이는 것을 우선시합니다.
+    ##출구 도착시 바로 탈출
+    global ans,grid,cnt
+    temp=[row[:] for row in grid]
+    for i in range(N):
+        for j in range(N):
+            if grid[i][j]<0:
+                b=False
+                mm=min_dist(i,exit[0],j,exit[1])
+                for dx,dy in zip(dxs,dys):
+                    tr,tc=i+dx,j+dy
+                    if can_go(tr,tc) and min_dist(tr,exit[0],tc,exit[1])<mm:
+                        ans-=grid[i][j]
+                        temp[i][j]-=grid[i][j]
+                        if (tr, tc)!= exit:
+                            temp[tr][tc]+=grid[i][j]
+                        else:
+                            cnt+=grid[i][j]
+                        break
+    grid=temp
+def rotate90(dist,sr,sc):
+    global grid, exit
+    result = [row[:] for row in grid]
+    temp_exit=None
+    for i in range(dist):
+        for j in range(dist):
+            # 벽이면 -1
+            result[sr+j][sc+dist - i - 1] = grid[sr+i][sc+j]-1 if grid[sr+i][sc+j]>0 else grid[sr+i][sc+j]
+            #정사각형 안에 출구 있으면 위치변경
+            if (sr+i,sc+j) ==exit:
+                temp_exit=(sr+j,sc+dist - i - 1)
+    exit=temp_exit
+    grid = result
 
-def rotate90(arr):
-    n,m=len(arr[0]),len(arr)
-    new_arr=[[0]*m for _ in range(n)]
-    for i in range(n):
-        for j in range(m):
-            if 1<=arr[i][j]<=9:
-                new_arr[j][m-i-1]=arr[i][j]-1
-            else:
-                new_arr[j][m - i - 1] = arr[i][j]
-    return new_arr
-def move(r,c):
-    for dx,dy in zip(DX,DY):
-        nr,nc=r+dx,c+dy
-        if in_range(nr,nc) and not 1<=grid[nr][nc]<=9 and distance(r,c,exitr,exitc)>distance(nr,nc,exitr,exitc):
-            return (nr,nc)
-    return -1
+def find_square(arr):
+    # [1] 비상구와 모든 사람간의 가장짧은 가로 또는 세로거리 구하기 => L
+    mn = N
+    for i in range(N):
+        for j in range(N):
+            if -11<arr[i][j]<0:     # 사람인 경우
+                mn=min(mn, max(abs(exit[0]-i), abs(exit[1]-j)))
 
-def select_box():
-    mdist = math.inf
-    # 가장 가까운 사람찾기
-    mp = []
-    for pr, pc in location:
-        p_dist = distance(pr, pc, exitr, exitc)
-        heapq.heappush(mp, (p_dist, pr, pc))
-        if p_dist < mdist:
-            mdist = p_dist
-    fp = [(i[1], i[2]) for i in mp if i[0] == mdist]
+    # [2] (0,0)부터 순회하면서 길이 L인 정사각형에 비상구와 사람있는지 체크 => 리턴 L+1
+    for si in range(N-mn):
+        for sj in range(N-mn):                  # 가능한 모든 시작위치
+            if si<=exit[0]<=si+mn and sj<=exit[1]<=sj+mn: # 비상구가 포함된 사각형!
+                for i in range(si, si+mn+1):
+                    for j in range(sj, sj+mn+1):
+                        if -11<arr[i][j]<0:     # 사람인 경우 리턴!
+                            return si, sj,mn + 1
+cnt=M
+for kk in range(K):
+    #1모두 한칸씩 움직이기
+    unit_move()
 
-    fb = []
-    for cr, cc in fp:
-        width = max(abs(cc - exitc), abs(cr - exitr))
-        if cr<=exitr:
-            cr= 0 if exitr-width<=0 else exitr-width
-        elif cr>exitr:
-            cr=exitr
-        if cc<=exitc:
-            cc=0 if exitc-width<=0 else exitr-width
-        elif cc>exitc:
-            cc=exitc
-        heapq.heappush(fb,(cr, cc))
-    bx,by=heapq.heappop(fb)
-
-    return width+1,bx,by
-
-
-
-cnt=0
-N, M, K=map(int,input().split())
-grid=[list(map(int,input().split())) for _ in range(N)]
-location=[]
-for _ in range(M):
-    x,y=map(lambda x:int(x)-1,input().split())
-    grid[x][y]+=-1
-    location.append((x,y))
-exitr,exitc=map(lambda x:int(x)-1,input().split())
-grid[exitr][exitc] = 1000
-arrive=0
-location = list(set(location))
-for turn in range(1,K+1):
-
-    # 사람 한명씩 다 움직이기(벽 없는 곳으로), 움직일 수 없으면 안움직임
-    # 여러명 함께 가능
-    add_=[]
-    rm=[]
-    n_arr=[x[:] for x in grid]
-    for pr,pc in location:
-        new=move(pr,pc)
-        if new==-1:
-            continue
-        else:
-            rm.append((pr,pc))
-            add_.append(new)
-            cnt += -grid[pr][pc]
-            n_arr[new[0]][new[1]]+= grid[pr][pc]
-            n_arr[pr][pc]-= grid[pr][pc]
-    for i in range(len(add_)):
-        location.append(add_[i])
-    for i in range(len(rm)):
-        location.remove(rm[i])
-    grid=n_arr
-
-    location = list(set(location))
-    if (exitr,exitc) in location:
-        location.remove((exitr,exitc))
-
-    # 출구와 한명이상 포함하는 가장작은 정사각형 잡기
-    width, bx, by=select_box()
-    temp=[[0]*width for _ in range(width)]
-    for i in range(width):
-        for j in range(width):
-            temp[i][j]=grid[bx+i][by+j]
-            if temp[i][j]<0:
-                location.remove((bx+i,by+j))
-
-    #90도 회전
-    new_arr=rotate90(temp)
-    for i in range(width):
-        for j in range(width):
-            grid[bx+i][by+j]=new_arr[i][j]
-            if new_arr[i][j]<0:
-                location.append((bx+i,by+j))
-            if new_arr[i][j]>9:
-                exitr,exitc=bx+i,by+j
-
-    #모든 참가자가 도착했는지 확인해서 다 도착하면 끛
-    if location==[]:
+    if cnt==0:
         break
 
-# 모든 참가자들의 이동거리 합과 출구 좌표를 출력
-print(cnt)
-print(exitr+1, exitc+1)
+    #2미로 회전
+    i, j,side=find_square(grid)
+    rotate90(side, i, j)
+
+#출력:모든 참가자들의 이동 거리 합과 출구 좌표
+print(ans)
+print(f'{exit[0]+1} {exit[1]+1}')
