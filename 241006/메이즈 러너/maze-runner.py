@@ -24,6 +24,8 @@ def unit_move():
     #움직일 수 있는 칸이 2개 이상이라면, 상하로 움직이는 것을 우선시합니다.
     ##출구 도착시 바로 탈출
     global unit, ans
+    rm=[]
+    ap=[]
     for idx in range(len(unit)):
         r,c=unit[idx]
         q=[]
@@ -39,9 +41,16 @@ def unit_move():
             _,dr=heapq.heappop(q)
             nr,nc=r+dxs[dr],c+dys[dr]
             if (nr,nc)!= exit:
-                unit[idx]=(nr,nc)
+                rm.append((r,c))
+                ap.append((nr,nc))
             else:
-                unit.pop(idx)
+                rm.append((r,c))
+
+    for r,c in rm:
+        unit.remove((r,c))
+    for r,c in ap:
+        unit.append((r,c))
+
     unit=list(set(unit))
 
 def rotate90(dist,sr,sc):
@@ -88,11 +97,11 @@ def rotate_square():
         else:
             sr,sc=min(r,exit[0]),min(c,exit[1])
         heapq.heappush(q,(side+1,sr,sc))
-    side,sr,sc=heapq.heappop(q)
-    rotate90(side,sr,sc)
+    side,i,j=heapq.heappop(q)
 
-for kk in range(K):
+    rotate90(side,i,j)
 
+for _ in range(K):
     if len(unit)==0:
         break
 
