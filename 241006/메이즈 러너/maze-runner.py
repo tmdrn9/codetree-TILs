@@ -99,10 +99,8 @@ def rotate_square():
         heapq.heappush(q,(side,sr,sc))
     side,i,j=heapq.heappop(q)
     rotate90(side,i,j)
-    print(f'size:{side},r:{i+1},c:{j+1}')
 
 for kk in range(K):
-    print(kk)
 
     #1모두 한칸씩 움직이기
     unit_move()
@@ -112,7 +110,6 @@ for kk in range(K):
 
     #2미로 회전
     rotate_square()
-    print(f'exit:{exit[0]+1},{exit[1]+1}')
 
 #출력:모든 참가자들의 이동 거리 합과 출구 좌표
 print(ans)
