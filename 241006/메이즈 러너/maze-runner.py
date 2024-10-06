@@ -48,6 +48,7 @@ def rotate90(dist,sr,sc):
     global grid, exit
     rm=[]
     ap=[]
+    temp_exit=exit
 
     result = [row[:] for row in grid]
     for i in range(dist):
@@ -67,7 +68,8 @@ def rotate90(dist,sr,sc):
         unit.remove((r,c))
     for r,c in ap:
         unit.append((r,c))
-    exit=temp_exit
+    if exit!=temp_exit:
+        exit=temp_exit
     grid = result
 
 def rotate_square():
