@@ -110,11 +110,12 @@ def rotate_square():
     rotate90(side,i,j)
 
 for kk in range(K):
-    if len(unit)==0:
-        break
 
     #1모두 한칸씩 움직이기
     unit_move()
+
+    if len(unit)==0:
+        break
 
     #2미로 회전
     rotate_square()
