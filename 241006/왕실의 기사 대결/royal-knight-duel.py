@@ -41,10 +41,11 @@ def fight(start,d):
         
     damage[start]=0
     for idx in d_set:
-        if unit[idx][4]-damage[idx]<=0:
-            unit[idx].pop()
+        si,sj,h,w,k=unit[idx]
+        if k-damage[idx]<=0:
+            unit.pop(idx)
             continue
-        unit[idx][4]-=damage[idx]
+        unit[idx]=[si+dxs[d],sj+dys[d],h,w,k-damage[idx]]
 
 for _ in range(Q):
     i,d=map(int,input().split())
