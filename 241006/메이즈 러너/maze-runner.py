@@ -62,12 +62,12 @@ def rotate90(dist,sr,sc):
     result = [row[:] for row in grid]
     for i in range(dist):
         for j in range(dist):
-            result[sr+j][sc+dist - i - 1] = grid[sr+i][sc+j]
-            # 정사각형 안에 벽이 있으면 -1
-            if result[sr+j][sc+dist - i - 1] > 0:
-                result[sr+j][sc+dist - i - 1] -= 1
+            result[sr+j][sc+dist - i - 1] = grid[sr+i][sc+j]-1 if grid[sr+i][sc+j]>0 else 0
+            # # 정사각형 안에 벽이 있으면 -1
+            # if result[sr+j][sc+dist - i - 1] > 0:
+            #     result[sr+j][sc+dist - i - 1] -= 1
             # 정사각형 안에 unit 있으면 위치변경
-            elif (sr+i,sc+j) in unit:
+            if (sr+i,sc+j) in unit:
                 rm.append((sr+i,sc+j))
                 ap.append((sr+j,sc+dist - i - 1))
             #정사각형 안에 출구 있으면 위치변경
