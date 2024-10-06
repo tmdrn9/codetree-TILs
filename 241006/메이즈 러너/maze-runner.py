@@ -27,22 +27,20 @@ def unit_move():
     rm=[]
     ap=[]
     for idx in range(len(unit)):
+        b = False
         r,c=unit[idx]
-        q=[]
         mm=min_dist(r,exit[0],c,exit[1])
-        for d,(dx,dy) in enumerate(zip(dxs,dys)):
+        for dx,dy in zip(dxs,dys):
             tr,tc=r+dx,c+dy
             if can_go(tr,tc):
-                e_dist=min_dist(tr,exit[0],tc,exit[1])
-                if e_dist<mm:
-                    heapq.heappush(q,(e_dist,d))
-        if q!=[]:
+                if min_dist(tr,exit[0],tc,exit[1])<mm:
+                    b=True
+                    break
+        if b:
             ans+=1
-            _,dr=heapq.heappop(q)
-            nr,nc=r+dxs[dr],c+dys[dr]
-            if (nr,nc)!= exit:
+            if (tr, tc)!= exit:
                 rm.append((r,c))
-                ap.append((nr,nc))
+                ap.append((tr, tc))
             else:
                 rm.append((r,c))
 
@@ -51,7 +49,7 @@ def unit_move():
     for r,c in ap:
         unit.append((r,c))
 
-    unit=list(set(unit))
+    #unit=list(set(unit))
 
 def rotate90(dist,sr,sc):
     global grid, exit
@@ -62,46 +60,49 @@ def rotate90(dist,sr,sc):
     result = [row[:] for row in grid]
     for i in range(dist):
         for j in range(dist):
-            result[sr+j][sc+dist - i - 1] = grid[sr+i][sc+j]-1 if grid[sr+i][sc+j]>0 else 0
-            # # 정사각형 안에 벽이 있으면 -1
-            # if result[sr+j][sc+dist - i - 1] > 0:
-            #     result[sr+j][sc+dist - i - 1] -= 1
+            # 벽이면 -1
+            result[sr+j][sc+dist - i - 1] = grid[sr+i][sc+j]-1 if grid[sr+i][sc+j]>0 else grid[sr+i][sc+j]
+
             # 정사각형 안에 unit 있으면 위치변경
             if (sr+i,sc+j) in unit:
-                rm.append((sr+i,sc+j))
-                ap.append((sr+j,sc+dist - i - 1))
+                for _ in range(unit.count((sr+i,sc+j))):
+                    rm.append((sr+i,sc+j))
+                    ap.append((sr+j,sc+dist - i - 1))
             #정사각형 안에 출구 있으면 위치변경
-            elif (sr+i,sc+j) ==exit:
+            if (sr+i,sc+j) ==exit:
                 temp_exit=(sr+j,sc+dist - i - 1)
+
     for r,c in rm:
         unit.remove((r,c))
     for r,c in ap:
         unit.append((r,c))
-    if temp_exit is not None:
-        exit=temp_exit
+    exit=temp_exit
     grid = result
 
 def rotate_square():
     ##한 명 이상의 참가자와 출구를 포함한 가장 작은 정사각형 잡아 90도 회전, 안에 벽 -1
     ##r작음>c작음
     q=[]
-    for idx in range(len(unit)):
-        r,c=unit[idx]
-        side=max(abs(r-exit[0]),abs(c-exit[1])) #변의 크기
+    ## 0,0/2,3
+    temp=list(set(unit))
+    for idx in range(len(temp)):
+        r,c=temp[idx]
+        side=max(abs(r-exit[0])+1,abs(c-exit[1])+1) #변의 크기
         if r <= exit[0]:
-            sr = 0 if exit[0] - side <= 0 else exit[0] - side
+            sr = 0 if exit[0] - side +1<= 0 else exit[0] - side+1
         else:
             sr = exit[0]
         if c <= exit[1]:
-            sc = 0 if exit[1] - side <= 0 else exit[1] - side
+            sc = 0 if exit[1] - side+1 <= 0 else exit[1] - side+1
         else:
             sc = exit[1]
-        heapq.heappush(q,(side+1,sr,sc))
+        heapq.heappush(q,(side,sr,sc))
     side,i,j=heapq.heappop(q)
-
     rotate90(side,i,j)
+    print(f'size:{side},r:{i+1},c:{j+1}')
 
 for kk in range(K):
+    print(kk)
 
     #1모두 한칸씩 움직이기
     unit_move()
@@ -111,6 +112,7 @@ for kk in range(K):
 
     #2미로 회전
     rotate_square()
+    print(f'exit:{exit[0]+1},{exit[1]+1}')
 
 #출력:모든 참가자들의 이동 거리 합과 출구 좌표
 print(ans)
