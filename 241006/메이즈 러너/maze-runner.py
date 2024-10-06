@@ -82,8 +82,6 @@ def rotate_square():
 
 cnt=M
 for kk in range(K):
-    print(kk)
-
     #1모두 한칸씩 움직이기
     unit_move()
 
