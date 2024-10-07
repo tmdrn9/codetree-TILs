@@ -50,7 +50,7 @@ def lu_move():
     if grid[lr][lc]!=0:
         ###산타+=C/루돌프가 이동해온 방향으로 산타 C만큼 밀림
         s_idx=grid[lr][lc]
-        timing[s_idx]+=1
+        timing[s_idx]+=2
         score[s_idx]+=C
         bfs(s_idx,lr,lc,dx,dy,C)
     grid[lr][lc] = -1
@@ -64,7 +64,6 @@ def bfs(idx,r,c,dx,dy,k):
         n_idx=grid[nr][nc]
         grid[nr][nc] = idx
         santa[idx] = (nr, nc)
-        timing[n_idx]+=1
         bfs(n_idx,nr,nc,dx,dy,1)
     elif grid[nr][nc]==0:
         grid[nr][nc] = idx
@@ -96,11 +95,15 @@ def st_move(idx):
             grid[nr][nc]=idx
         else:
             score[idx]+=D
+            timing[idx] += 2
             bfs(idx, nr, nc, -dxs[dr], -dys[dr], D)
 
 
 
-for turn in range(M):
+for turn in range(1,M+1):
+    for i in range(1,len(timing)):
+        if timing[i]<turn:
+            timing[i]+=1
     s_remove = []
     #1루돌프 움직임
     lu_move()
@@ -110,8 +113,7 @@ for turn in range(M):
 
         ##기절해있거나 격자밖으로 빠져 탈락한 산타들은 제외
         ## 루돌프와 충돌한 산타는 k번째 턴이었다면, (k+1)번째 턴까지 기절하게 되어 (k+2)번째 턴부터 다시 정상상태
-        if timing[idx]%2!=0:
-            timing[idx]+=1
+        if timing[idx]>turn:
             continue
         st_move(idx)
     for idx in s_remove:
