@@ -31,15 +31,13 @@ def move_unit():
                 for dx,dy in zip(dxs,dys):
                     ni,nj=i+dx,j+dy
                     if can_go(ni,nj) and dist(er,ec,ni,nj)<mn:
-                        ans+=1
+                        ans-=grid[i][j]
+                        temp[i][j] -= grid[i][j]
                         if (ni,nj)!=(er,ec):
                             temp[ni][nj] += grid[i][j]
-                            temp[i][j] -= grid[i][j]
-                            break
                         else:
-                            bye-=1
-                            temp[i][j] -= grid[i][j]
-                            break
+                            bye-=grid[i][j]
+                        break
 
     grid=temp
 
@@ -72,15 +70,18 @@ def rotate90(size, r,c):
 
 #main
 for turn in range(1,K+1):
+    #print(turn)
     #참가자 움직임(동시)
     move_unit()
+
+    if bye==0:
+        break
+
     #회전 네모 찾기
     size, r, c=find_square()
     #회전
     rotate90(size, r, c)
 
-    if bye==0:
-        break
 
 
 #출력
