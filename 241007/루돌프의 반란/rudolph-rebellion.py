@@ -109,7 +109,7 @@ for turn in range(1,M+1):
     lu_move()
 
     #2산타 순서대로 움직임
-    for idx in santa:
+    for idx,_ in sorted(santa.items()):
 
         ##기절해있거나 격자밖으로 빠져 탈락한 산타들은 제외
         ## 루돌프와 충돌한 산타는 k번째 턴이었다면, (k+1)번째 턴까지 기절하게 되어 (k+2)번째 턴부터 다시 정상상태
