@@ -56,9 +56,9 @@ def find_square():
     for i in range(N-mn+1):
         for j in range(N-mn+1):
             if i<=er and er<=i+mn and j<=ec and ec<=j+mn:
-                for h in range(i,i+mn+1):
-                    for w in range(j,j+mn+1):
-                        if -11<grid[h][w]<0:
+                for h in range(mn+1):
+                    for w in range(mn+1):
+                        if -11<grid[i+h][j+w]<0:
                             return mn+1,i,j
 def rotate90(size, r,c):
     global grid,er,ec
