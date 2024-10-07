@@ -49,7 +49,7 @@ def lu_move():
     if grid[lr][lc]!=0:
         ###산타+=C/루돌프가 이동해온 방향으로 산타 C만큼 밀림
         s_idx=grid[lr][lc]
-        timing[s_idx]+=2
+        timing[s_idx]=turn+2
         score[s_idx]+=C
         bfs(s_idx,lr,lc,dx,dy,C)
     grid[lr][lc] = -1
@@ -95,7 +95,7 @@ def st_move(idx):
             grid[nr][nc]=idx
         else:
             score[idx]+=D
-            timing[idx] += 2
+            timing[idx] = turn+ 2
             bfs(idx, nr, nc, -dxs[dr], -dys[dr], D)
 
 
