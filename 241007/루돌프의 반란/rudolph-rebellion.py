@@ -1,6 +1,8 @@
 import heapq
 from collections import deque
+import sys
 
+sys.stdin=open('input.txt')
 
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
@@ -23,7 +25,6 @@ for _ in range(P):
     i,r,c=map(lambda x:int(x)-1,input().split())
     santa[i+1]=(r,c)
     grid[r][c] = i+1
-
 def lu_move():
     ## 탈락하지않은 가장 가까운 산타를 향해 1칸 돌진
     ## r큼>c큼
@@ -55,25 +56,20 @@ def lu_move():
         bfs(s_idx,lr,lc,dx,dy,C)
     grid[lr][lc] = -1
 
-def bfs(cur,si,sj,di,dj,mul):
-    q = [(cur,si,sj,mul)]           # cur번 산타를 si,sj에서 di,dj방향으로 mul칸 이동
-
-    while q:
-        cur,ci,cj,mul=q.pop(0)
-        # 진행방향 mul칸만큼 이동시켜서 범위내이고 산타있으면 q삽입/범위밖 처리
-        ni,nj=ci+di*mul, cj+dj*mul
-        if 0<=ni<N and 0<=nj<N:     # 범위내 => 산타 O, X
-            if grid[ni][nj]==0:        # 빈 칸 => 이동처리
-                grid[ni][nj]=cur
-                santa[cur]=[ni,nj]
-                return
-            else:                   # 산타 O => 연쇄이동
-                q.append((grid[ni][nj],ni,nj,1))   # 한칸 이동, v[ni][nj]: 다음 산타번호
-                grid[ni][nj]=cur
-                santa[cur]=[ni,nj]
-        else:                       # 범위밖 => 탈락 => 끝
-            s_remove.append(idx)
-            return
+def bfs(idx,r,c,dx,dy,k):
+    nr,nc=r+(k*dx), c+(k*dy)
+    if not in_range(nr,nc):
+        s_remove.append(idx)
+        return
+    if N>grid[nr][nc]>0:
+        n_idx=grid[nr][nc]
+        grid[nr][nc] = idx
+        santa[idx] = (nr, nc)
+        bfs(n_idx,nr,nc,dx,dy,1)
+    elif grid[nr][nc]==0:
+        grid[nr][nc] = idx
+        santa[idx] = (nr, nc)
+        return
 
 
 
@@ -110,6 +106,7 @@ for turn in range(1,M+1):
     for i in range(1,len(timing)):
         if timing[i]<turn:
             timing[i]+=1
+    print(turn)
     s_remove = []
     #1루돌프 움직임
     lu_move()
