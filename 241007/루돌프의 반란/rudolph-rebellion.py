@@ -22,6 +22,7 @@ for _ in range(P):
     i,r,c=map(lambda x:int(x)-1,input().split())
     santa[i+1]=(r,c)
     grid[r][c] = i+1
+    
 def lu_move():
     ## 탈락하지않은 가장 가까운 산타를 향해 1칸 돌진
     ## r큼>c큼
@@ -63,7 +64,7 @@ def bfs(idx,r,c,dx,dy,k):
         grid[nr][nc] = idx
         santa[idx] = (nr, nc)
         bfs(n_idx,nr,nc,dx,dy,1)
-    elif grid[nr][nc]==0:
+    else:
         grid[nr][nc] = idx
         santa[idx] = (nr, nc)
         return
