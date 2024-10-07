@@ -45,24 +45,20 @@ def move_unit():
 
 
 def find_square():
-    mn=N+1
+    mn=N
     for i in range(N):
         for j in range(N):
             if -11<grid[i][j]<0:
-                temp=max(abs(er-i),abs(ec-j))
-                if temp<mn:
-                    mn=temp
-
-    if mn==N:
-        return N,0,0
+                mn=min(mn,max(abs(er-i),abs(ec-j)))
 
     for i in range(N-mn):
         for j in range(N-mn):
-            if i<=er and er<1+i+mn and j<=ec and ec<1+j+mn:
-                for h in range(mn+1):
-                    for w in range(mn+1):
-                        if -11<grid[i+h][j+w]<0:
+            if i<=er<=i+mn and j<=ec<=j+mn:
+                for h in range(i,i+mn+1):
+                    for w in range(j,j+mn+1):
+                        if -11<grid[h][w]<0:
                             return mn+1,i,j
+
 def rotate90(size, r,c):
     global grid,er,ec
     result=[row[:] for row in grid]
