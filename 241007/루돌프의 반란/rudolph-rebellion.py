@@ -55,20 +55,25 @@ def lu_move():
         bfs(s_idx,lr,lc,dx,dy,C)
     grid[lr][lc] = -1
 
-def bfs(idx,r,c,dx,dy,k):
-    nr,nc=r+(k*dx), c+(k*dy)
-    if not in_range(nr,nc):
-        s_remove.append(idx)
-        return
-    if N>grid[nr][nc]>0:
-        n_idx=grid[nr][nc]
-        grid[nr][nc] = idx
-        santa[idx] = (nr, nc)
-        bfs(n_idx,nr,nc,dx,dy,1)
-    elif grid[nr][nc]==0:
-        grid[nr][nc] = idx
-        santa[idx] = (nr, nc)
-        return
+def bfs(cur,si,sj,di,dj,mul):
+    q = [(cur,si,sj,mul)]           # cur번 산타를 si,sj에서 di,dj방향으로 mul칸 이동
+
+    while q:
+        cur,ci,cj,mul=q.pop(0)
+        # 진행방향 mul칸만큼 이동시켜서 범위내이고 산타있으면 q삽입/범위밖 처리
+        ni,nj=ci+di*mul, cj+dj*mul
+        if 0<=ni<N and 0<=nj<N:     # 범위내 => 산타 O, X
+            if grid[ni][nj]==0:        # 빈 칸 => 이동처리
+                grid[ni][nj]=cur
+                santa[cur]=[ni,nj]
+                return
+            else:                   # 산타 O => 연쇄이동
+                q.append((grid[ni][nj],ni,nj,1))   # 한칸 이동, v[ni][nj]: 다음 산타번호
+                grid[ni][nj]=cur
+                santa[cur]=[ni,nj]
+        else:                       # 범위밖 => 탈락 => 끝
+            s_remove.append(idx)
+            return
 
 
 
