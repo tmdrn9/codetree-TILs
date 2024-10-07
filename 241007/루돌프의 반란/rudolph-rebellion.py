@@ -1,8 +1,5 @@
 import heapq
 from collections import deque
-import sys
-
-sys.stdin=open('input.txt')
 
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
@@ -106,7 +103,7 @@ for turn in range(1,M+1):
     for i in range(1,len(timing)):
         if timing[i]<turn:
             timing[i]+=1
-    print(turn)
+
     s_remove = []
     #1루돌프 움직임
     lu_move()
