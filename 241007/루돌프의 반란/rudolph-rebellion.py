@@ -68,6 +68,7 @@ def bfs(idx,r,c,dx,dy,k):
     elif grid[nr][nc]==0:
         grid[nr][nc] = idx
         santa[idx] = (nr, nc)
+        return
 
 
 
