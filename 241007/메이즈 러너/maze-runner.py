@@ -53,6 +53,9 @@ def find_square():
                 if temp<mn:
                     mn=temp
 
+    if mn==N:
+        return N,0,0
+
     for i in range(N-mn):
         for j in range(N-mn):
             if i<=er and er<=i+mn and j<=ec and ec<=j+mn:
