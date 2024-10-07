@@ -45,7 +45,7 @@ def move_unit():
 
 
 def find_square():
-    mn=N
+    mn=N+1
     for i in range(N):
         for j in range(N):
             if -11<grid[i][j]<0:
