@@ -57,7 +57,7 @@ def lu_move():
 def bfs(idx,r,c,dx,dy,k):
     nr,nc=r+(k*dx), c+(k*dy)
     if not in_range(nr,nc):
-        s_remove.append(idx)
+        santa.pop(idx)
         return
     if N>grid[nr][nc]>0:
         n_idx=grid[nr][nc]
@@ -105,20 +105,19 @@ for turn in range(1,M+1):
         if timing[i]<turn:
             timing[i]+=1
 
-    s_remove = []
     #1루돌프 움직임
     lu_move()
 
     #2산타 순서대로 움직임
-    for idx,_ in sorted(santa.items()):
+    for idx in range(1,P+1):
 
         ##기절해있거나 격자밖으로 빠져 탈락한 산타들은 제외
+        if idx not in santa:
+            continue
         ## 루돌프와 충돌한 산타는 k번째 턴이었다면, (k+1)번째 턴까지 기절하게 되어 (k+2)번째 턴부터 다시 정상상태
         if timing[idx]>turn:
             continue
         st_move(idx)
-    for idx in s_remove:
-        santa.pop(idx)
 
     ## 만약 P 명의 산타가 모두 게임에서 탈락하게 된다면 그 즉시 게임이 종료
     if len(santa)==0:
