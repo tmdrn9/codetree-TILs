@@ -59,7 +59,7 @@ def bfs(idx,r,c,dx,dy,k):
     if not in_range(nr,nc):
         santa.pop(idx)
         return
-    if N>grid[nr][nc]>0:
+    if P>=grid[nr][nc]>0:
         n_idx=grid[nr][nc]
         grid[nr][nc] = idx
         santa[idx] = (nr, nc)
