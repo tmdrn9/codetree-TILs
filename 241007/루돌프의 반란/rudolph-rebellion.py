@@ -60,7 +60,7 @@ def bfs(idx,r,c,dx,dy,k):
     if not in_range(nr,nc):
         s_remove.append(idx)
         return
-    if grid[nr][nc]>0:
+    if N>grid[nr][nc]>0:
         n_idx=grid[nr][nc]
         grid[nr][nc] = idx
         santa[idx] = (nr, nc)
