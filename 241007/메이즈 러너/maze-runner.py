@@ -36,7 +36,7 @@ def move_unit():
                         if (ni,nj)!=(er,ec):
                             temp[ni][nj] += grid[i][j]
                         else:
-                            bye-=grid[i][j]
+                            bye+=grid[i][j]
                         break
 
     grid=temp
