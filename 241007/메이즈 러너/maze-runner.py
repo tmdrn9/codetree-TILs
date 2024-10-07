@@ -58,7 +58,7 @@ def find_square():
 
     for i in range(N-mn):
         for j in range(N-mn):
-            if i<=er and er<=i+mn and j<=ec and ec<=j+mn:
+            if i<=er and er<1+i+mn and j<=ec and ec<1+j+mn:
                 for h in range(mn+1):
                     for w in range(mn+1):
                         if -11<grid[i+h][j+w]<0:
