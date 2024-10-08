@@ -68,7 +68,7 @@ def after_fight(winner, loser, point, x, y):
             if in_range(nlx, nly) and [nlx, nly] not in player:
                 break
     ###해당 칸에 총이 있다면, 해당 플레이어는 가장 공격력이 높은 총을 획득하고 나머지 총들은 해당 격자에 내려 놓습니다.
-    if len(gun[(lx, ly)]) > 1:
+    if len(gun[(nlx, nly)]) > 1:
         change_gun(loser, nlx, nly)
     player[loser] = [nlx, nly]
 
