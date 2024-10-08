@@ -34,7 +34,7 @@ def bfs(start,d):
             if idx in damage_unit:
                 continue
             sr,sc,sh,sw,sk=unit[idx]
-            if nr<=sr+sh-1 and sr<=nr+h-1 and nc<=sc+sw-1 and sc<=nc+h-1: #그 위치에 다른 기사있으면 연쇄적으로 이동
+            if nr<=sr+sh-1 and sr<=nr+h-1 and nc<=sc+sw-1 and sc<=nc+w-1: #그 위치에 다른 기사있으면 연쇄적으로 이동
                 q.append(idx)
                 damage_unit.add(idx)
 
