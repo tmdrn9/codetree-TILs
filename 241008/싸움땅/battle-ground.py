@@ -52,7 +52,8 @@ def after_fight(winner, loser, point, x, y):
     ###진 사람: 본인이 가지고 있는 총을 해당 격자에 내려놓고, 해당 플레이어가 원래 가지고 있던 방향대로 한 칸 이동
     if player_g[loser] != 0:
         gs = gun[(x, y)]
-        gun[(x, y)] = gs.append(player_g[loser])
+        gs.append(player_g[loser])
+        gun[(x, y)] = gs
         player_g[loser] = 0
 
     lx, ly = player[loser][0], player[loser][1]
