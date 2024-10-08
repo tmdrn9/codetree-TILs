@@ -92,10 +92,10 @@ for turn in range(k):
 
         # 이동한 곳에 플레이어 있는지 확인
         if [nx, ny] in player:
-            player[p] = [nx, ny]
             p_power = player_s[p] + player_g[p]
             p2 = player.index([nx, ny])
             p2_power = player_s[p2] + player_g[p2]
+            player[p] = [nx, ny]
 
             ###플레이어의 초기 능력치와 가지고 있는 총의 공격력의 합을 비교(같은경우 초기 능력치 큰사람 이김)
             if p_power > p2_power:
