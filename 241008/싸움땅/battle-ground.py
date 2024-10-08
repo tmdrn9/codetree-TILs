@@ -60,10 +60,13 @@ def after_fight(winner, loser, point, x, y):
     ld = player_d[loser]
     nlx, nly = lx + dxs[ld], ly + dys[ld]
     ###이동하려는 칸에 다른 플레이어가 있거나 격자 범위 밖인 경우에는 오른쪽으로 90도씩 회전하여 빈 칸이 보이는 순간 이동
-    if not in_range(nlx, nly) or [nlx, nly] in player:
-        ld = (ld + 1) % 4
-        player_d[loser] = ld
-        nlx, nly = lx + dxs[ld], ly + dys[ld]
+    for _ in range(4):
+        if not in_range(nlx, nly) or [nlx, nly] in player:
+            ld = (ld + 1) % 4
+            player_d[loser] = ld
+            nlx, nly = lx + dxs[ld], ly + dys[ld]
+        else:
+            break
     ###해당 칸에 총이 있다면, 해당 플레이어는 가장 공격력이 높은 총을 획득하고 나머지 총들은 해당 격자에 내려 놓습니다.
     if len(gun[(lx, ly)]) > 1:
         change_gun(loser, nlx, nly)
