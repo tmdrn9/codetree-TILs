@@ -11,15 +11,16 @@ unit={}
 for i in range(1,N+1):
     unit[i]=list(map(int,input().split()))
     init_k[i]=unit[i][4]
-def bfs(i,d):
+def bfs(start,d):
     damage=[0]*(N+1)
     damage_unit=set()
     q=deque([])
-    q.append(i)
+
+    q.append(start)
+    damage_unit.add(start)
 
     while q:
         cur=q.popleft()
-        damage_unit.add(cur)
         r,c,h,w,k=unit[cur]
         nr, nc = r + dxs[d], c + dys[d]
         for ii in range(h):
@@ -35,9 +36,9 @@ def bfs(i,d):
             sr,sc,sh,sw,sk=unit[idx]
             if nr<=sr+sh-1 and sr<=nr+h-1 and nc<=sc+sw-1 and sc<=nc+h-1: #그 위치에 다른 기사있으면 연쇄적으로 이동
                 q.append(idx)
-                damage_unit.add(i)
+                damage_unit.add(idx)
 
-    damage[i]=0 #명령받은 기사는 피해입지 않음
+    damage[start]=0 #명령받은 기사는 피해입지 않음
     for idx in damage_unit: #기사들이 모두 밀린 후에 일괄적으로 대미지
         r,c,h,w,k=unit[idx]
         if k-damage[idx]<=0:
@@ -50,11 +51,11 @@ def bfs(i,d):
 
 #main
 for turn in range(Q):
-    idx,d=map(int,input().split())
+    i,d=map(int,input().split())
     # 체스판에 사라진 기사에게 명령을 내리면 반응x
-    if idx in unit:
+    if i in unit:
         ##명령받은대로 이동
-        bfs(idx,d)
+        bfs(i,d)
 
 #기사이동
 ##그 위치에 다른 기사있으면 연쇄적으로 이동
