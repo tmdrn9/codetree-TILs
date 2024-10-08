@@ -98,16 +98,26 @@ for turn in range(k):
             player[p] = [nx, ny]
 
             ###플레이어의 초기 능력치와 가지고 있는 총의 공격력의 합을 비교(같은경우 초기 능력치 큰사람 이김)
+            #이긴 플레이어는 승리한 칸에 떨어져 있는 총들과 원래 들고 있던 총 중 가장 공격력이 높은 총을 획득하고, 나머지 총들은 해당 격자에 내려 놓습니다.
+
             if p_power > p2_power:
                 after_fight(p, p2, abs(p_power - p2_power), nx, ny)
+                if len(gun[(nx, ny)]) > 1:
+                    change_gun(p, nx, ny)
             elif p_power < p2_power:
                 after_fight(p2, p, abs(p_power - p2_power), nx, ny)
+                if len(gun[(nx, ny)]) > 1:
+                    change_gun(p2, nx, ny)
             else:
                 if player_s[p] > player_s[p2]:
                     after_fight(p, p2, 0, nx, ny)
+                    if len(gun[(nx, ny)]) > 1:
+                        change_gun(p, nx, ny)
                 else:
                     after_fight(p2, p, 0, nx, ny)
-
+                    if len(gun[(nx, ny)]) > 1:
+                        change_gun(p2, nx, ny)
+            
 
         else:
             ##해당 칸에 총이 있으면 가지고있는 총과 비교해서 공격력 센 총 획득 후 남은건 자리에 놓기
