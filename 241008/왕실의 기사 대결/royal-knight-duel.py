@@ -20,6 +20,7 @@ def bfs(i,d):
 
     while q:
         cur=q.popleft()
+        damage_unit.add(cur)
         r,c,h,w,k=unit[cur]
         nr, nc = r + dxs[d], c + dys[d]
         for ii in range(h):
@@ -35,7 +36,6 @@ def bfs(i,d):
             sr,sc,sh,sw,sk=unit[idx]
             if nr<=sr+sh-1 and sr<=nr+h-1 and nc<=sc+sw-1 and sc<=nc+h-1: #그 위치에 다른 기사있으면 연쇄적으로 이동
                 q.append(idx)
-                damage_unit.add(idx)
 
     damage[i]=0 #명령받은 기사는 피해입지 않음
     for idx in damage_unit: #기사들이 모두 밀린 후에 일괄적으로 대미지
