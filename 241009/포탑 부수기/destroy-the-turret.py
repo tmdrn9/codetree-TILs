@@ -52,7 +52,7 @@ def boom(nr,nc,ar,ac):
         if grid[tr][tc]!=0:
             # 주위 8개의 방향에 있는 포탑 공격력//2 만큼 피해
             path.append((tr,tc))
-            grid[tr][tc]= grid[tr][tc]-attack_point if attack_t<grid[tr][tc] else 0
+            grid[tr][tc]= grid[tr][tc]-attack_point if attack_point<grid[tr][tc] else 0
     return path
 def laser(nr,nc,ar,ac):
     # 우/하/좌/상
