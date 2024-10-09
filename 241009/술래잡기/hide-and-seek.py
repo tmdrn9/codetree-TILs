@@ -70,6 +70,7 @@ for turn in range(1,k+1):
         tdist+=1
 
         if tdist==mdist:
+            tdist=0
             md = (md + 1) % 4
             move_count += 1
             if move_count==2:
