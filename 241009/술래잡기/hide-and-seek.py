@@ -99,18 +99,63 @@ for turn in range(1,k+1):
             mdist=1
     #2-2 바라보고 있는 방향을 기준으로 현재칸을 포함해 3칸내에 있는 도망자 잡음.
     t_point=0
-    for c in range(3):
-        tx,ty=mx+(dxs[md]*c),my+(dys[md]*c)
-        ##나무가 있는 칸의 도망자는 못잡음
-        if in_range(tx,ty) and grid[tx][ty]==0:
-            n_unit=len(unit_grid[tx][ty])
-            if n_unit>0:
-                t_point+=n_unit
-                units=unit_grid[tx][ty]
-                while units:
-                    u_idx=units.pop(0)
-                    unit.pop(u_idx)
-                    unit_k.pop(u_idx)
+    if mx+(dxs[md]*2)>n-1:
+        for c in range(n-3,n):
+            if grid[c][my]==0:
+                n_unit=len(unit_grid[c][my])
+                if n_unit>0:
+                    t_point+=n_unit
+                    units=unit_grid[c][my]
+                    while units:
+                        u_idx=units.pop(0)
+                        unit.pop(u_idx)
+                        unit_k.pop(u_idx)
+    elif mx+(dxs[md]*2)<0:
+        for c in range(0,3):
+            if grid[c][my]==0:
+                n_unit=len(unit_grid[c][my])
+                if n_unit>0:
+                    t_point+=n_unit
+                    units=unit_grid[c][my]
+                    while units:
+                        u_idx=units.pop(0)
+                        unit.pop(u_idx)
+                        unit_k.pop(u_idx)
+    elif my+(dys[md]*2)>n-1:
+        for c in range(n-3,n):
+            if grid[mx][c]==0:
+                n_unit=len(unit_grid[mx][c])
+                if n_unit>0:
+                    t_point+=n_unit
+                    units=unit_grid[mx][c]
+                    while units:
+                        u_idx=units.pop(0)
+                        unit.pop(u_idx)
+                        unit_k.pop(u_idx)
+    elif my+(dys[md]*2)<0:
+        for c in range(0,3):
+            if grid[mx][c]==0:
+                n_unit=len(unit_grid[mx][c])
+                if n_unit>0:
+                    t_point+=n_unit
+                    units=unit_grid[mx][c]
+                    while units:
+                        u_idx=units.pop(0)
+                        unit.pop(u_idx)
+                        unit_k.pop(u_idx)
+    else:
+        for c in range(3):
+            tx,ty=mx+(dxs[md]*c),my+(dys[md]*c)
+            ##나무가 있는 칸의 도망자는 못잡음
+            if grid[tx][ty]==0:
+                n_unit=len(unit_grid[tx][ty])
+                if n_unit>0:
+                    t_point+=n_unit
+                    units=unit_grid[tx][ty]
+                    while units:
+                        u_idx=units.pop(0)
+                        unit.pop(u_idx)
+                        unit_k.pop(u_idx)
     ##턴*잡은 도망자수만큼 점수 획득
     point+=(t_point*turn)
 
