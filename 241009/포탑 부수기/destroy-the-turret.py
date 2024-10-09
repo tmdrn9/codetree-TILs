@@ -22,14 +22,14 @@ def attacker():
     grid[ar][ac]+=(N+M)
     return ar,ac
 
-def noattacker(attacker):
+def noattacker(ar,ac):
     global grid
     q = []
     for i in range(N):
         for j in range(M):
             # 자신제외하고 가장 강한 포탑 공격
             ##공격력 높음>공격한지 가장 오래된 포탑>r+c작음>c작음
-            if grid[i][j] != 0 and attacker!=(i,j):
+            if grid[i][j] != 0 and (ar,ac)!=(i,j):
                 heapq.heappush(q, (-grid[i][j], attack_t[i][j], (i + j), j))
     _, _, hap, c = heapq.heappop(q)
     return hap-c, c
@@ -111,7 +111,7 @@ for turn in range(1,K+1):
 
 
     #[2] 공격 대상자 선정
-    nr,nc=noattacker(attacker)
+    nr,nc=noattacker(ar,ac)
 
     #[3] 레이저공격 시도 후 안되면 포탄공격
     #[3-1] 레이저 공격: 최단경로로 이동
