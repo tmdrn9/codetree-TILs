@@ -40,9 +40,6 @@ def boom(nr,nc,ar,ac):
     ##공격 대상은 공격자의 공격력만큼 피해
     attack_point=grid[ar][ac]
     grid[nr][nc]=grid[nr][nc]-attack_point if grid[nr][nc]>attack_point else 0
-    if grid[nr][nc]<0:
-        grid[nr][nc]=0
-
 
     for ddx,ddy in zip(dx,dy):
         # 가장자리에서 막힌 방향으로 피해
@@ -52,35 +49,63 @@ def boom(nr,nc,ar,ac):
         if grid[tr][tc]!=0:
             # 주위 8개의 방향에 있는 포탑 공격력//2 만큼 피해
             path.append((tr,tc))
-            grid[tr][tc]= grid[tr][tc]-attack_point if attack_point<grid[tr][tc] else 0
+            grid[tr][tc]= grid[tr][tc]-(attack_point//2) if (attack_point//2)<grid[tr][tc] else 0
     return path
-def laser(nr,nc,ar,ac):
-    # 우/하/좌/상
-    dxs, dys = [0,1,0,-1], [1, 0, -1, 0]
+
+def bfs(nr,nc,ar,ac):
+    dxs, dys = [0, 1, 0, -1], [1, 0, -1, 0]
     visited = [[0] * M for _ in range(N)]
     before = [[0] * M for _ in range(N)]
-    attack_point=grid[ar][ac]
-    path=[(nr,nc),(ar,ac)]
 
-    q=deque([])
-    q.append((ar,ac))
-    visited[ar][ac]=1
-
+    q = deque([])
+    q.append((ar, ac))
+    visited[ar][ac] = 1
 
     while q:
-        r,c=q.popleft()
-        for dx,dy in zip(dxs,dys):
+        r, c = q.popleft()
+        for dx, dy in zip(dxs, dys):
             # 가장자리에서 막힌 방향으로 진행하고자 한다면, 반대편으로 나옴
-            tr,tc=(r+dx)%N,(c+dy)%M
+            tr, tc = (r + dx) % N, (c + dy) % M
             # 부서진 포탑이 있는 위치는 지날 수 없음
-            if not visited[tr][tc] and grid[tr][tc]!=0:
-                q.append((tr,tc))
-                visited[tr][tc]=1
-                before[tr][tc]=(r,c)
+            if not visited[tr][tc] and grid[tr][tc] != 0:
+                q.append((tr, tc))
+                visited[tr][tc] = 1
+                before[tr][tc] = (r, c)
                 if (tr, tc) == (nr, nc):
-                    break
+                    return before
+    return None
 
-    if visited[nr][nc]==0:
+
+def laser(nr,nc,ar,ac):
+    # 우/하/좌/상
+    # dxs, dys = [0,1,0,-1], [1, 0, -1, 0]
+    # visited = [[0] * M for _ in range(N)]
+    # before = [[0] * M for _ in range(N)]
+    attack_point=grid[ar][ac]
+    path=[(nr,nc),(ar,ac)]
+    #
+    before=bfs(nr,nc,ar,ac)
+    # q=deque([])
+    # q.append((ar,ac))
+    # visited[ar][ac]=1
+    #
+    #
+    # while q:
+    #     r,c=q.popleft()
+    #     for dx,dy in zip(dxs,dys):
+    #         # 가장자리에서 막힌 방향으로 진행하고자 한다면, 반대편으로 나옴
+    #         tr,tc=(r+dx)%N,(c+dy)%M
+    #         # 부서진 포탑이 있는 위치는 지날 수 없음
+    #         if not visited[tr][tc] and grid[tr][tc]!=0:
+    #             q.append((tr,tc))
+    #             visited[tr][tc]=1
+    #             before[tr][tc]=(r,c)
+    #             if (tr, tc) == (nr, nc):
+    #                 break
+    #
+    # if visited[nr][nc]==0:
+    #     return None
+    if before==None:
         return None
     else:
         grid[nr][nc]=grid[nr][nc]-attack_point if grid[nr][nc]>attack_point else 0
