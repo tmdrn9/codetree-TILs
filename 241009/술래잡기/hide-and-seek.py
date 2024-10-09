@@ -97,7 +97,7 @@ for turn in range(1,k+1):
     for c in range(3):
         tx,ty=mx+(dxs[md]*c),my+(dys[md]*c)
         ##나무가 있는 칸의 도망자는 못잡음
-        if grid[tx][ty]==0:
+        if in_range(tx,ty) and grid[tx][ty]==0:
             n_unit=len(unit_grid[tx][ty])
             if n_unit>0:
                 t_point+=n_unit
