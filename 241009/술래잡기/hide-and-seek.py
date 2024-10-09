@@ -79,21 +79,25 @@ for turn in range(1,k+1):
         if (mx,my)==(0,0):
             tonado=False
             md=2
-            tdist=0
+            tdist=1
+            move_count=1
     else: #상우하좌 하우상좌
         mx, my = mx + dxs[md], my + dys[md]
         tdist += 1
         if tdist==mdist:
+            tdist = 0
             md = (md + 3) % 4
             move_count += 1
             if move_count==2:
                 mdist-=1
                 move_count=0
-        if (mx,my)==(n//2,n/2):
+        if (mx,my)==(n//2,n//2):
             tonado = True
             md = 0
-
-    ##2-2 바라보고 있는 방향을 기준으로 현재칸을 포함해 3칸내에 있는 도망자 잡음.
+            tdist = 0
+            move_count = 0
+            mdist=1
+    #2-2 바라보고 있는 방향을 기준으로 현재칸을 포함해 3칸내에 있는 도망자 잡음.
     t_point=0
     for c in range(3):
         tx,ty=mx+(dxs[md]*c),my+(dys[md]*c)
