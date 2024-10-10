@@ -95,8 +95,7 @@ for turn in range(k):
                     # 공을 획득한 팀은 즉시 머리사람과 꼬리사람이 바뀝니다. 즉 방향을 바꾸게 됩니다.
                     q = deque([])
                     tt = team[tm]
-                    for xx,yy in tt[::-1]:
-                        q.append((xx,yy))
+                    q.extend(tt[::-1])
                     q.rotate(-(len(tt)-tail[tm]))
                     team[tm] = list(q)
                     head[tm] = team[tm][0]
@@ -105,7 +104,7 @@ for turn in range(k):
             if ok:
                 break
         bx,by=bx+dxs[ball],by+dys[ball]
-    ball= ((turn+1)//(n))%4
+    ball= ((turn)//(n))%4
 
 #출력
 print(sum(point))
