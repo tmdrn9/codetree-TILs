@@ -77,7 +77,7 @@ for turn in range(k):
     elif ball==1:
         bx, by = n-1, turn % n
     elif ball==2:
-        bx, by = turn%n, n-1
+        bx, by = n-1-(turn % n), n-1
     else:
         bx, by = 0, n-1-(turn % n)
     # [2-2] 최초만나는사람 팀 공얻기
