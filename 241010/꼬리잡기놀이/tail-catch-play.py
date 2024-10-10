@@ -1,4 +1,6 @@
+import sys
 from collections import deque
+import heapq
 
 #우상좌하
 dxs,dys=[0,-1,0,1],[1,0,-1,0]
@@ -22,35 +24,30 @@ def find_group():
         for j in range(n):
             if not visited[i][j] and grid[i][j]==1:
                 cnt+=1
-                tcnt = 1
-                path=False
+                tcnt=1
                 q.append((i,j))
                 visited[i][j]=1
                 head[cnt] = [i, j]
                 while q:
                     tx,ty=q.popleft()
                     team[cnt].append((tx, ty))
-                    if grid[tx][ty] == 3:
-                        tail[cnt] = tcnt
-                        path=True
+                    temp=[]
                     for dx,dy in zip(dxs,dys):
                         nx,ny=tx+dx,ty+dy
-                        if in_range(nx,ny) and not visited[nx][ny]:
-                            if not path:
-                                if 0<grid[nx][ny]<4:
-                                    q.append((nx, ny))
-                                    visited[nx][ny] = 1
-                                    tcnt += 1
-                                    break
-                            else:
-                                if 0 < grid[nx][ny] <= 4:
-                                    q.append((nx, ny))
-                                    visited[nx][ny] = 1
-                                    break
+                        if in_range(nx,ny) and not visited[nx][ny] and grid[nx][ny]>0:
+                            heapq.heappush(temp,(grid[nx][ny],nx,ny))
+                    if temp!=[]:
+                        _,nx,ny=heapq.heappop(temp)
+                        if 0<grid[nx][ny]<4:
+                            tcnt+=1
+                        q.append((nx, ny))
+                        visited[nx][ny] = 1
+                tail[cnt]=tcnt
 
 #맨 앞에 있는 사람을 머리사람, 맨 뒤에 있는 사람을 꼬리사람
 #[0] 각팀 찾기
 find_group()
+
 for turn in range(k):
 
     #[1]각팀 머리사람따라 한칸 이동
