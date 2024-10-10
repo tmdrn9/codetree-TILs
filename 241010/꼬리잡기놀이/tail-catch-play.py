@@ -72,6 +72,7 @@ for turn in range(k):
 
     #[2]공 던져짐
     #[2-1] 공굴러가기
+    ball= (turn//n)%4
     if ball==0:
         bx, by = turn%n,0
     elif ball==1:
@@ -104,7 +105,7 @@ for turn in range(k):
             if ok:
                 break
         bx,by=bx+dxs[ball],by+dys[ball]
-    ball= ((turn)//(n))%4
+    
 
 #출력
 print(sum(point))
