@@ -1,4 +1,5 @@
 from collections import deque
+
 #우상좌하
 dxs,dys=[0,-1,0,1],[1,0,-1,0]
 #입력
@@ -62,12 +63,12 @@ for turn in range(k):
         team[idx]=list(q)
         head[idx]=team[idx][0]
 
-        for n,(i,j) in enumerate(team[idx]):
-            if n==0:
+        for nn,(i,j) in enumerate(team[idx]):
+            if nn==0:
                 grid[i][j]=1
-            elif 0<n<tail[idx]-1:
+            elif 0<nn<tail[idx]-1:
                 grid[i][j]=2
-            elif n==tail[idx]-1:
+            elif nn==tail[idx]-1:
                 grid[i][j]=3
             else:
                 grid[i][j]=4
