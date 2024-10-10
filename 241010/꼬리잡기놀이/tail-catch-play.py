@@ -79,12 +79,13 @@ for turn in range(k):
     elif ball==2:
         bx, by = turn%n, n-1
     else:
-        bx, by = 0, turn % n
+        bx, by = 0, n-(turn % n)
     # [2-2] 최초만나는사람 팀 공얻기
+    # print(ball,bx,by)
     ok = False
     for i in range(n):
-        # 최초에 만나게 되는 사람만이 공을 얻게 되어 점수 얻음
-        if grid[bx][by]!=0 and grid[bx][by]!=4:
+        #최초에 만나게 되는 사람만이 공을 얻게 되어 점수 얻음
+        if 0<grid[bx][by]<4:
             # 머리사람을 시작으로 팀 내에서 k번째 사람이라면 k의 제곱만큼 점수를 얻음
             for tm in range(m):
                 if (bx,by) in team[tm]:
@@ -104,7 +105,7 @@ for turn in range(k):
             if ok:
                 break
         bx,by=bx+dxs[ball],by+dys[ball]
-    ball= (turn//(n-1))%4
+    ball= ((turn+1)//(n))%4
 
 #출력
 print(sum(point))
