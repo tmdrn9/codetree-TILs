@@ -6,7 +6,7 @@ dp[0]=1
 dp[1]=1
 
 #4
-for i in range(4,n+1):
+for i in range(2,n+1):
     temp=0
     for j in range(i):
         temp+= dp[j]*dp[i-j-1]
