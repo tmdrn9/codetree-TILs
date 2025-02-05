@@ -10,3 +10,4 @@ for i in range(5,n+1):
     dp[i]=dp[i-2]+dp[i-3]
     
 print(dp[n]%10007)
+
