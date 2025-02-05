@@ -9,7 +9,7 @@ dp[3]=5
 #4
 for i in range(4,n+1):
     temp=0
-    for j in range(n):
+    for j in range(i):
         temp+= dp[j]*dp[n-j-1]
     dp[i]=temp
 print(dp[n])
