@@ -19,4 +19,10 @@ for _,i,j in cells:
             dp[ni][nj]=max(dp[ni][nj],dp[i][j]+1)
 
 
-print(max(max(dp)))
+# print(max(max(dp)))
+ans=0
+for i in range(n):
+    for j in range(n):
+        ans = max(ans, dp[i][j])
+
+print(ans)
