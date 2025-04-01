@@ -1,7 +1,7 @@
 import sys
 from collections import deque
-sys.stdin = open("./input.txt")
-input = sys.stdin.readline
+# sys.stdin = open("./input.txt")
+# input = sys.stdin.readline
 dxs,dys=[0,0,1,-1],[1,-1,0,0] #동서남북
 
 n,m,f=map(int,input().split()) #공간한변길이, 시간의벽한변길이, 이상현상 개수
@@ -69,13 +69,13 @@ def bfs(mountainis,startx,starty,endx,endy):
                 nx,ny=x+dx,y+dy
                 if 0<=x<m:
                     if nx<0:
-                        ny=3*m+(2*m-ny)
+                        ny=3*m+(2*m-ny) ##
                         nx=m
                     elif ny<m:
                         ny=nx
                         nx=m
                     elif ny>=2*m:
-                        ny=2*m+(2*m-ny)
+                        ny=2*m+(m-nx-1)
                         nx=m
                 else:
                     if ny>=4*m:
