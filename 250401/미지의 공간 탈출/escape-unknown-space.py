@@ -32,7 +32,6 @@ for i in range(f):
     fire.append(list(map(int,input().split())))
     grid[fire[i][0]][fire[i][1]]=-1
 # fire=[list(map(int,input().split())) for _ in range(f)] #초기위치 r,c ,확산방향 d, 확산상수 v
-
 day=0
 endx,endy,mountain_x,mountain_y=None,None,None,None
 for i in range(n):
@@ -104,36 +103,39 @@ def move_fire(day):
 ############################################################################
 result=0
 days=0
-t1,_=bfs(True,startx,starty,ingridx,ingridy)
-if t1==-1:
+if ingridy==None:
     print(-1)
 else:
-    for d in range(t1):
-        if move_fire(d):
-            print(-1)
-
-move_fire(t1)
-days=t1
-# print(days)
-loop=True
-while loop:
-    t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
-    if t2==-1:
-        loop=False
+    t1,_=bfs(True,startx,starty,ingridx,ingridy)
+    if t1==-1:
+        print(-1)
     else:
-        out=False
-        for d in range(t2):
-            move_fire(days+1+d)
-            for x,y,_,_ in fire:
-                if visitedd[x][y]!=0:
-                    grid[x][y]
-                    out=True
-            if out==True:
-                break
-    if out:
-        continue
-    loop=False
-if t2==-1:
-    print(-1)
-else:
-    print(days+t2-1)
+        for d in range(t1):
+            if move_fire(d):
+                print(-1)
+
+    move_fire(t1)
+    days=t1
+    # print(days)
+    loop=True
+    while loop:
+        t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
+        if t2==-1:
+            loop=False
+        else:
+            out=False
+            for d in range(t2):
+                move_fire(days+1+d)
+                for x,y,_,_ in fire:
+                    if visitedd[x][y]!=0:
+                        grid[x][y]
+                        out=True
+                if out==True:
+                    break
+        if out:
+            continue
+        loop=False
+    if t2==-1:
+        print(-1)
+    else:
+        print(days+t2-1)
