@@ -145,12 +145,12 @@ else:
     # print(days)
     loop=True
     while loop:
+        out=False
         t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
         # print(t2)
         if t2==-1:
             loop=False
         else:
-            out=False
             for d in range(t2):
                 move_fire(days+1+d)
                 for x,y,_,_ in fire:
