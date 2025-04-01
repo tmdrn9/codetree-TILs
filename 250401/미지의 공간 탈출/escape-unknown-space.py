@@ -129,6 +129,7 @@ def move_fire(day):
 ############################################################################
 result=0
 days=0
+stop=False
 if ingridy==None:
     print(-1)
 else:
@@ -138,8 +139,9 @@ else:
     else:
         for d in range(t1):
             if move_fire(d):
+                stop=True
                 print(-1)
-
+if stop==False:
     move_fire(t1)
     days=t1
     # print(days)
