@@ -131,16 +131,16 @@ result=0
 days=0
 stop=False
 if ingridy==None:
-    print('1',-1)
+    print(-1)
 else:
     t1,_=bfs(True,startx,starty,ingridx,ingridy)
     if t1==-1:
-        print('2',-1)
+        print(-1)
     else:
         for d in range(t1):
             if move_fire(d):
                 stop=True
-                print('3',-1)
+                print(-1)
         if stop==False:
             move_fire(t1)
             days=t1
@@ -165,6 +165,6 @@ else:
                     continue
                 loop=False
             if t2==-1:
-                print('2',-1)
+                print(-1)
             else:
                 print(days+t2-1)
