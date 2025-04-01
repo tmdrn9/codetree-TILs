@@ -1,7 +1,7 @@
 import sys
 from collections import deque
-sys.stdin = open("./input.txt")
-input = sys.stdin.readline
+# sys.stdin = open("./input.txt")
+# input = sys.stdin.readline
 dxs,dys=[0,0,1,-1],[1,-1,0,0] #동서남북
 
 n,m,f=map(int,input().split()) #공간한변길이, 시간의벽한변길이, 이상현상 개수
@@ -67,6 +67,32 @@ def bfs(mountainis,startx,starty,endx,endy):
                 return visited[x][y],visited
             for dx,dy in zip(dxs,dys):
                 nx,ny=x+dx,y+dy
+                if 0<=x<m:
+                    if nx<0:
+                        nx,ny=m,3*n+ny-n
+                    elif ny<m:
+                        ny=nx
+                        nx=m
+                    elif ny>=2*m:
+                        ny=2*m+(m-nx-1)
+                        nx=m
+                else:
+                    if ny>=4*m:
+                        ny=0
+                    elif ny<0:
+                        ny=(4*m)-1
+
+                    if nx<m:
+                        if ny<m:
+                            nx=ny
+                            ny=m
+                        elif 2*m<=ny<3*m:
+                            nx=m-1-(2*m-ny)
+                            ny=2*m-1
+                        elif ny>=3*m:
+                            nx=0
+                            ny=m+(m-1-(3*m-ny))
+
                 if 0<=nx<(2*m) and 0<=ny<(m*4) and mountain[nx][ny]==0 and visited[nx][ny]==0:
                     pq.append((nx,ny))
                     visited[nx][ny]=visited[x][y]+1
@@ -120,6 +146,7 @@ else:
     loop=True
     while loop:
         t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
+        # print(t2)
         if t2==-1:
             loop=False
         else:
