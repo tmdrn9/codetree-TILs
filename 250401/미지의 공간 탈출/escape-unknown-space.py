@@ -149,17 +149,19 @@ else:
             while loop:
                 out=False
                 t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
+                middle=0
                 # print(t2)
                 if t2==-1:
                     loop=False
                 else:
-                    for d in range(t2):
+                    for d in range(middle+t2):
                         move_fire(days+1+d)
                         for x,y,_,_ in fire:
                             if visitedd[x][y]!=0:
                                 grid[x][y]
                                 out=True
                         if out==True:
+                            middle+=d
                             break
                 if out:
                     continue
