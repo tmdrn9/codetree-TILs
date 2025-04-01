@@ -141,30 +141,30 @@ else:
             if move_fire(d):
                 stop=True
                 print(-1)
-    if stop==False:
-        move_fire(t1)
-        days=t1
-        # print(days)
-        loop=True
-        while loop:
-            out=False
-            t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
-            # print(t2)
-            if t2==-1:
+        if stop==False:
+            move_fire(t1)
+            days=t1
+            # print(days)
+            loop=True
+            while loop:
+                out=False
+                t2,visitedd=bfs(False,outMountainx,outMountainy,endx,endy)
+                # print(t2)
+                if t2==-1:
+                    loop=False
+                else:
+                    for d in range(t2):
+                        move_fire(days+1+d)
+                        for x,y,_,_ in fire:
+                            if visitedd[x][y]!=0:
+                                grid[x][y]
+                                out=True
+                        if out==True:
+                            break
+                if out:
+                    continue
                 loop=False
+            if t2==-1:
+                print('2',-1)
             else:
-                for d in range(t2):
-                    move_fire(days+1+d)
-                    for x,y,_,_ in fire:
-                        if visitedd[x][y]!=0:
-                            grid[x][y]
-                            out=True
-                    if out==True:
-                        break
-            if out:
-                continue
-            loop=False
-        if t2==-1:
-            print(-1)
-        else:
-            print(days+t2-1)
+                print(days+t2-1)
