@@ -69,7 +69,7 @@ def bfs(mountainis,startx,starty,endx,endy):
                 nx,ny=x+dx,y+dy
                 if 0<=x<m:
                     if nx<0:
-                        ny=3*m+(2*m-ny) ##
+                        ny=3*m+(2*m-ny)-1 ##
                         nx=m
                     elif ny<m:
                         ny=nx
