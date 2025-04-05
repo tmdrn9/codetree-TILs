@@ -50,18 +50,18 @@ def can_go(x,y,nx,ny):
     
 def bfs(ri,ci):
     visited=[[0]*(c+2) for _ in range(r+3)]
-    if ri-2==r-1:
-        return r
-    else:
-        pq=deque([(ri,ci)])
-        visited[ri][ci]=1
-        while pq:
-            x,y=pq.popleft()
-            for d in [2,3,0,1]:
-                nx,ny=x+dxs[d],y+dys[d]
-                if grid[nx][ny]>0 and can_go(x,y,nx,ny) and not visited[nx][ny]:
-                    visited[nx][ny]=1
-                    pq.append((nx,ny))
+    # if ri-2==r-1:
+    #     return r
+    # else:
+    pq=deque([(ri,ci)])
+    visited[ri][ci]=1
+    while pq:
+        x,y=pq.popleft()
+        for d in [2,3,0,1]:
+            nx,ny=x+dxs[d],y+dys[d]
+            if grid[nx][ny]>0 and can_go(x,y,nx,ny) and not visited[nx][ny]:
+                visited[nx][ny]=1
+                pq.append((nx,ny))
     # print(visited)  
     for rr in range(r+2,0,-1):
         if 1 in visited[rr]:
