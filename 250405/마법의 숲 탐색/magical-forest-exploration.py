@@ -1,6 +1,7 @@
 from collections import deque
 #2:33 시작
 #2:48 설계 끝
+#
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 r,c,k= map(int,input().split())
 grid=None
@@ -34,7 +35,7 @@ def move_g(n,ci,di):
             di=(di+1)%4
         else:
             break
-    if ri<=2:
+    if ri<=2 or ci<2 or ci>c:
         reset=True
     else:
         grid[ri][ci]=n
