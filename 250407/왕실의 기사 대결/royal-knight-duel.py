@@ -14,6 +14,7 @@ for i in range(1,L+1):
     grid[i]=[2]+list(map(int,input().split()))+[2]
 person=[[0,0,0,0,0] for _ in range(N+1)]
 original_k=[0]*(N+1)
+
 #기사위치 표시
 for i in range(1,N+1):
     # 기사초기위치 rc, 직사각형형태hw, 체력k
@@ -40,8 +41,6 @@ def move_person(I,D):
         x,y=pq.popleft()
         nx,ny=x+dxs[D],y+dys[D]
         p_temp_grid[nx][ny] = p_grid[x][y]
-        if grid[nx][ny]==1:
-            damage[p_grid[x][y]]+=1
         if grid[nx][ny]==2:
             return
         else:
@@ -54,20 +53,20 @@ def move_person(I,D):
                             pq.append((i, j))
                             visited[i][j] = 1
                 else:
-                    visited[i][j]=1
+                    visited[nx][ny]=1
                     pq.append((nx,ny))
+        if grid[nx][ny]==1:
+            damage[p_grid[x][y]]+=1
 
     #만약 다 이동가능하다면 마지막에 있던애부터 이동 시작
-    for i in p_move[::-1]:
+    for i in p_move:
         r, c, h, w, k = person[i]
         person[i]=[r+dxs[D], c+dys[D], h, w, k]
-
     #대미지 적용
+    damage[I]=0
     for i,dd in enumerate(damage):
-        if i==I:
-            continue
         person[i][4]-=dd
-        if person[i][4]<0:
+        if person[i][4]<=0:
             r, c, h, w, _ = person[i]
             for ii in range(r, r + h):
                 for jj in range(c, c + w):
@@ -90,6 +89,6 @@ for turn in range(Q):
 
 result=0
 for i in range(1,N+1):
-    if person[i][4]>0:
+    if person[i][4] > 0:
         result+=original_k[i]-person[i][4]
 print(result)
