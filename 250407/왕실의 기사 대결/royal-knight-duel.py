@@ -25,6 +25,8 @@ for i in range(1,N+1):
             p_grid[ii][jj]=i
 
 def move_person(I,D):
+    global p_grid
+    p_temp_grid=[[0]*(L+2) for _ in range(L+2)]
     visited=[[0]*(L+2) for _ in range(L+2)]
     p_move=[I]
     r, c, h, w, k =person[I]
@@ -58,8 +60,7 @@ def move_person(I,D):
         for ii in range(r, r + h):
             for jj in range(c, c + w):
                 nx,ny=ii + dxs[D], jj + dys[D]
-                p_grid[ii][jj]=0
-                p_grid[nx][ny]=i
+                p_temp_grid[nx][ny]=i
                 if grid[nx][ny]==1:
                     damage[i]+=1
         person[i]=[r+dxs[D], c+dys[D], h, w, k]
@@ -74,7 +75,8 @@ def move_person(I,D):
             for ii in range(r, r + h):
                 for jj in range(c, c + w):
                     p_grid[ii][jj]=0
-
+    p_grid=p_temp_grid
+    return
 
 # 2. 대결대미지
 ##명령받은 기사가 다른기사 밀치면 밀려난 기사들, 이동한곳에 함정수 만큼 피해
