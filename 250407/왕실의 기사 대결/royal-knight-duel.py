@@ -1,77 +1,52 @@
 #시작12:18
 #코딩시작 12:30
 from collections import deque
-# import sys
-# sys.stdin=open('input.txt')
-# input=sys.stdin.readline
+
 dxs,dys=[-1,0,1,0],[0,1,0,-1]
 
 L,N,Q=map(int,input().split())
 
 grid=[[2]*(L+2) for _ in range(L+2)]
-p_grid=[[0]*(L+2) for _ in range(L+2)] #기사들 두는 그리드
 for ii in range(1,L+1):
     grid[ii]=[2]+list(map(int,input().split()))+[2]
-person=[[0,0,0,0,0] for _ in range(N+1)]
-original_k=[0]*(N+1)
 
-#기사위치 표시
-for n in range(1,N+1):
-    # 기사초기위치 rc, 직사각형형태hw, 체력k
-    r,c,h,w,k=map(int,input().split())
-    original_k[n]=k
-    person[n]=[r,c,h,w,k]
-    for ii in range(r,r+h):
-        for jj in range(c,c+w):
-            p_grid[ii][jj]=n
+person={}
+original_k={}
+for i in range(1,N+1):
+    r, c, h, w, k =map(int,input().split())
+    person[i]=(r, c, h, w, k)
+    original_k[i]=k
 
 def move_person(I,D):
-    global p_grid
     damage = [0] * (N + 1)
-    p_temp_grid=[[0]*(L+2) for _ in range(L+2)]
-    visited=[[0]*(L+2) for _ in range(L+2)]
-    p_move=[I]
-    r, c, h, w, k =person[I]
-    pq=deque([])
-    for i in range(r, r + h):
-        for j in range(c, c + w):
-            pq.append((i,j))
-            visited[i][j]=1
+    pq=deque([I])
+    p_move=set()
+    p_move.add(I)
     while pq:
-        x,y=pq.popleft()
-        nx,ny=x+dxs[D],y+dys[D]
-        p_temp_grid[nx][ny] = p_grid[x][y]
-        if grid[nx][ny]==2:
-            return
-        else:
-            if p_grid[nx][ny]>0 and not visited[nx][ny]:
-                if p_grid[x][y] != p_grid[nx][ny]:
-                    p_move.append(p_grid[nx][ny])
-                    r, c, h, w, _ = person[p_grid[nx][ny]]
-                    for i in range(r, r + h):
-                        for j in range(c, c + w):
-                            pq.append((i, j))
-                            visited[i][j] = 1
-                else:
-                    visited[nx][ny]=1
-                    pq.append((nx,ny))
-        if grid[nx][ny]==1:
-            damage[p_grid[x][y]]+=1
+        n=pq.popleft()
+        r, c, h, w, k = person[n]
+        nr,nc=r+dxs[D],c+dys[D]
+        for i in range(nr, nr + h):
+            for j in range(nc, nc + w):
+                if grid[i][j]==2:
+                    return
+                elif grid[i][j]==1:
+                    damage[n]+=1
+        for idx in person:
+            if idx in p_move:
+                continue
+            ti,tj,th,tw,tk=person[idx]
+            if nr+h-1>=ti and nr<=ti+th-1 and tj<=nc+w-1 and nc<=tj+tw-1:
+                p_move.add(idx)
+                pq.append(idx)
 
-    #이동가능하다면
-    damage[I] = 0
-    for i in range(1,N+1):
-        person[i][4] -= damage[i]
-        r, c, h, w, k = person[i]
-        if person[i][4] <= 0:
+    damage[I]=0
+    for idx in p_move:
+        r, c, h, w, k = person[idx]
+        if k<=damage[idx]:
+            person.pop(idx)
             continue
-        if i in p_move:
-            person[i]=[r+dxs[D], c+dys[D], h, w, k]
-        else:
-            for ii in range(r, r + h):
-                for jj in range(c, c + w):
-                    p_temp_grid[ii][jj] = i
-    p_grid=p_temp_grid
+        person[idx]=(r+dxs[D],c+dys[D], h, w, k-damage[idx])
     return
 
 # 2. 대결대미지
@@ -83,12 +58,10 @@ def move_person(I,D):
 for turn in range(Q):
     ##기사 명령 받기/ 체스판에 사라진 기사에게 명령 내리면 반엉 x
     i,d=map(int, input().split())
-    if person[i][4]<=0:
-        continue
-    move_person(i,d)
+    if i in person:
+        move_person(i,d)
 
 result=0
-for i in range(1,N+1):
-    if person[i][4] > 0:
-        result+=original_k[i]-person[i][4]
+for idx in person:
+    result+=original_k[idx]-person[idx][4]
 print(result)
