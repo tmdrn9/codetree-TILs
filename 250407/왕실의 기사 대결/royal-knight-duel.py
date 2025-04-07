@@ -26,6 +26,7 @@ for i in range(1,N+1):
 
 def move_person(I,D):
     global p_grid
+    damage = [0] * (N + 1)
     p_temp_grid=[[0]*(L+2) for _ in range(L+2)]
     visited=[[0]*(L+2) for _ in range(L+2)]
     p_move=[I]
@@ -38,6 +39,9 @@ def move_person(I,D):
     while pq:
         x,y=pq.popleft()
         nx,ny=x+dxs[D],y+dys[D]
+        p_temp_grid[nx][ny] = p_grid[x][y]
+        if grid[nx][ny]==1:
+            damage[p_grid[x][y]]+=1
         if grid[nx][ny]==2:
             return
         else:
@@ -54,15 +58,8 @@ def move_person(I,D):
                     pq.append((nx,ny))
 
     #만약 다 이동가능하다면 마지막에 있던애부터 이동 시작
-    damage=[0]*(N+1)
     for i in p_move[::-1]:
         r, c, h, w, k = person[i]
-        for ii in range(r, r + h):
-            for jj in range(c, c + w):
-                nx,ny=ii + dxs[D], jj + dys[D]
-                p_temp_grid[nx][ny]=i
-                if grid[nx][ny]==1:
-                    damage[i]+=1
         person[i]=[r+dxs[D], c+dys[D], h, w, k]
 
     #대미지 적용
@@ -74,7 +71,7 @@ def move_person(I,D):
             r, c, h, w, _ = person[i]
             for ii in range(r, r + h):
                 for jj in range(c, c + w):
-                    p_grid[ii][jj]=0
+                    p_temp_grid[ii][jj]=0
     p_grid=p_temp_grid
     return
 
