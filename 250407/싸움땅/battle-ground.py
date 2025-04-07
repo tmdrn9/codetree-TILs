@@ -1,6 +1,6 @@
 #시작 8:44
 #설계끝 8:56
-#코딩끝
+#코딩끝 10:13
 # import sys
 # sys.stdin=open('input.txt')
 # input=sys.stdin.readline
