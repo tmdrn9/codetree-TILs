@@ -10,20 +10,20 @@ L,N,Q=map(int,input().split())
 
 grid=[[2]*(L+2) for _ in range(L+2)]
 p_grid=[[0]*(L+2) for _ in range(L+2)] #기사들 두는 그리드
-for i in range(1,L+1):
-    grid[i]=[2]+list(map(int,input().split()))+[2]
+for ii in range(1,L+1):
+    grid[ii]=[2]+list(map(int,input().split()))+[2]
 person=[[0,0,0,0,0] for _ in range(N+1)]
 original_k=[0]*(N+1)
 
 #기사위치 표시
-for i in range(1,N+1):
+for n in range(1,N+1):
     # 기사초기위치 rc, 직사각형형태hw, 체력k
     r,c,h,w,k=map(int,input().split())
-    original_k[i]=k
-    person[i]=[r,c,h,w,k]
+    original_k[n]=k
+    person[n]=[r,c,h,w,k]
     for ii in range(r,r+h):
         for jj in range(c,c+w):
-            p_grid[ii][jj]=i
+            p_grid[ii][jj]=n
 
 def move_person(I,D):
     global p_grid
@@ -58,12 +58,18 @@ def move_person(I,D):
         if grid[nx][ny]==1:
             damage[p_grid[x][y]]+=1
 
-    #만약 다 이동가능하다면 마지막에 있던애부터 이동 시작
-    for i in p_move:
-        r, c, h, w, k = person[i]
-        person[i]=[r+dxs[D], c+dys[D], h, w, k]
-    #대미지 적용
+    #이동가능하다면
+    for i in range(1,N+1):
+        if i in p_move:
+            r, c, h, w, k = person[i]
+            person[i]=[r+dxs[D], c+dys[D], h, w, k]
+        else:
+            r, c, h, w, _ = person[i]
+            for ii in range(r, r + h):
+                for jj in range(c, c + w):
+                    p_temp_grid[ii][jj] = i
     damage[I]=0
+    #대미지 적용
     for i,dd in enumerate(damage):
         person[i][4]-=dd
         if person[i][4]<=0:
