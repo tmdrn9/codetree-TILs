@@ -59,24 +59,18 @@ def move_person(I,D):
             damage[p_grid[x][y]]+=1
 
     #이동가능하다면
+    damage[I] = 0
     for i in range(1,N+1):
+        person[i][4] -= damage[i]
+        r, c, h, w, k = person[i]
+        if person[i][4] <= 0:
+            continue
         if i in p_move:
-            r, c, h, w, k = person[i]
             person[i]=[r+dxs[D], c+dys[D], h, w, k]
         else:
-            r, c, h, w, _ = person[i]
             for ii in range(r, r + h):
                 for jj in range(c, c + w):
                     p_temp_grid[ii][jj] = i
-    damage[I]=0
-    #대미지 적용
-    for i,dd in enumerate(damage):
-        person[i][4]-=dd
-        if person[i][4]<=0:
-            r, c, h, w, _ = person[i]
-            for ii in range(r, r + h):
-                for jj in range(c, c + w):
-                    p_temp_grid[ii][jj]=0
     p_grid=p_temp_grid
     return
 
