@@ -1,9 +1,6 @@
 #시작3:25
 #설계끝3:38
-#코딩끝 4:38
-# import sys
-# sys.stdin=open('input.txt')
-# input=sys.stdin.readline
+#코딩끝
 
 import heapq
 from collections import deque
@@ -61,9 +58,10 @@ def lazer(ar,ac,dr,dc):
             r,c=nr,nc
         ### 공격대상은 공격자의 공격력만큼 피해,경로에 포탑은 공격자의 공격력//2만큼 피해 (visited에 이전경로 저장)
         grid[dr][dc]= 0 if grid[dr][dc]<grid[ar][ac] else grid[dr][dc]-grid[ar][ac]
-        for pr,pc in path[:-1]:
-            grid[pr][pc]= 0 if  grid[pr][pc]<(grid[ar][ac]//2) else grid[pr][pc]-(grid[ar][ac]//2)
-        attack_related.extend(path)
+        if len(path)!=1:
+            for pr,pc in path[:-1]:
+                grid[pr][pc]= 0 if  grid[pr][pc]<(grid[ar][ac]//2) else grid[pr][pc]-(grid[ar][ac]//2)
+            attack_related.extend(path)
     return 1
 
 def boom(ar,ac,dr,dc):
