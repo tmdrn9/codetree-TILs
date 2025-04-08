@@ -1,6 +1,9 @@
 #시작3:25
 #설계끝3:38
-#코딩끝
+#코딩끝 4:38
+# import sys
+# sys.stdin=open('input.txt')
+# input=sys.stdin.readline
 
 import heapq
 from collections import deque
@@ -68,10 +71,10 @@ def boom(ar,ac,dr,dc):
     dxs, dys = [1,1,1,0,-1,-1,-1,0], [-1,0,1,1,1,0,-1,-1]
     grid[dr][dc]= 0 if grid[dr][dc]<grid[ar][ac] else grid[dr][dc]-grid[ar][ac]
     for dx,dy in zip(dxs,dys):
-        nr,nc=(ar + dx) % N, (ac + dy) % M
-        if (nr,nc)!=(ar,ac):
+        nr,nc=(dr + dx) % N, (dc + dy) % M
+        if (nr,nc)!=(ar,ac) and grid[nr][nc]!=0:
             grid[nr][nc]=0 if grid[nr][nc]<(grid[ar][ac]//2) else grid[nr][nc]-(grid[ar][ac]//2)
-            attack_related.extend((nr,nc))
+            attack_related.append((nr,nc))
 ###공격대상은 공격자의 공격력만큼 피해.주위 8개 방향에 있는 포탑은 공격자의 공격력//2만큼 피해
 ###공격자는 피해받지않음
 
