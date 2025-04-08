@@ -11,15 +11,20 @@ attack_time=[[0]*M for _ in range(N)]
 
 def select_attacker():
     ##부서지지 않은 포탑중 공격력 가장 약함>가장최근 공격>행+열 큰거>열값 가장 큰
+    not_break=0
     q=[]
     for i in range(N):
         for j in range(M):
             if grid[i][j]!=0:
+                not_break+=1
                 heapq.heappush(q,(grid[i][j],-attack_time[i][j],-(i+j),-j))
     _,_,hap,c=heapq.heappop(q)
     hap=-hap
     c=-c
-    return hap-c,c
+    if not_break==1:
+        return -1,-1
+    else:
+        return hap-c,c
 
 def select_damager(attacker_r,attacker_c):
     #공격력 가장 강함>공격한지 오래된 포탑>행+열 작은거>열값작은거
@@ -81,15 +86,13 @@ def boom(ar,ac,dr,dc):
 ###공격자는 피해받지않음
 
 for turn in range(1,K+1):
-    zeros=0
-    for row in grid:
-        zeros+=row.count(0)
-    if zeros==N*M-1:
-        break
+
     attack_related=[]
     # 1공격자 선정
     ##M+N만큼 공격력 증가
     attacker_r,attacker_c=select_attacker()
+    if (attacker_r,attacker_c)==(-1,-1):
+        break
     attack_time[attacker_r][attacker_c]=turn
     grid[attacker_r][attacker_c]+=(N+M)
     attack_related.append((attacker_r,attacker_c))
