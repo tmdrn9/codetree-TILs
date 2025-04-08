@@ -1,6 +1,6 @@
 #시작3:25
 #설계끝3:38
-#코딩끝
+#코딩끝5:03
 
 import heapq
 from collections import deque
@@ -26,7 +26,7 @@ def select_damager(attacker_r,attacker_c):
     q = []
     for i in range(N):
         for j in range(M):
-            if (i,j) != (attacker_r,attacker_c):
+            if grid[i][j]!=0 and (i,j) != (attacker_r,attacker_c):
                 heapq.heappush(q, (-grid[i][j], attack_time[i][j], i + j, j))
     _, _, hap, c = heapq.heappop(q)
     return hap - c, c
@@ -57,26 +57,32 @@ def lazer(ar,ac,dr,dc):
             path.append((nr,nc))
             r,c=nr,nc
         ### 공격대상은 공격자의 공격력만큼 피해,경로에 포탑은 공격자의 공격력//2만큼 피해 (visited에 이전경로 저장)
-        grid[dr][dc]= 0 if grid[dr][dc]<grid[ar][ac] else grid[dr][dc]-grid[ar][ac]
+        damage=grid[ar][ac]
+        grid[dr][dc]= 0 if grid[dr][dc]<damage else grid[dr][dc]-damage
+        damage//=2
         if len(path)!=1:
             for pr,pc in path[:-1]:
-                grid[pr][pc]= 0 if  grid[pr][pc]<(grid[ar][ac]//2) else grid[pr][pc]-(grid[ar][ac]//2)
+                grid[pr][pc]= 0 if  grid[pr][pc]<damage else grid[pr][pc]-damage
             attack_related.extend(path)
     return 1
 
 def boom(ar,ac,dr,dc):
     global attack_related
     dxs, dys = [1,1,1,0,-1,-1,-1,0], [-1,0,1,1,1,0,-1,-1]
-    grid[dr][dc]= 0 if grid[dr][dc]<grid[ar][ac] else grid[dr][dc]-grid[ar][ac]
+    damage = grid[ar][ac]
+    grid[dr][dc]= 0 if grid[dr][dc]<damage else grid[dr][dc]-damage
+    damage //= 2
     for dx,dy in zip(dxs,dys):
         nr,nc=(dr + dx) % N, (dc + dy) % M
         if (nr,nc)!=(ar,ac) and grid[nr][nc]!=0:
-            grid[nr][nc]=0 if grid[nr][nc]<(grid[ar][ac]//2) else grid[nr][nc]-(grid[ar][ac]//2)
+            grid[nr][nc]=0 if grid[nr][nc]<damage else grid[nr][nc]-damage
             attack_related.append((nr,nc))
 ###공격대상은 공격자의 공격력만큼 피해.주위 8개 방향에 있는 포탑은 공격자의 공격력//2만큼 피해
 ###공격자는 피해받지않음
 
 for turn in range(1,K+1):
+    if grid.count([0]*M)==N-1:
+        break
     attack_related=[]
     # 1공격자 선정
     ##M+N만큼 공격력 증가
@@ -90,7 +96,7 @@ for turn in range(1,K+1):
     attack_related.append((damager_r,damager_c))
     ##2-2레이저 공격
     ok=lazer(attacker_r,attacker_c,damager_r,damager_c)
-    ##2-3 레이저 안되면 포탄공격=>함수화
+    ##2-3 레이저 안되면 포탄공격
     if not ok:
         boom(attacker_r,attacker_c,damager_r,damager_c)
     #3포탑 부서짐
