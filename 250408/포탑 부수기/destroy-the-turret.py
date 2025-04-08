@@ -28,9 +28,11 @@ def select_damager(attacker_r,attacker_c):
         for j in range(M):
             if grid[i][j]!=0 and (i,j) != (attacker_r,attacker_c):
                 heapq.heappush(q, (-grid[i][j], attack_time[i][j], i + j, j))
-    _, _, hap, c = heapq.heappop(q)
-    return hap - c, c
-
+    if q:
+        _, _, hap, c = heapq.heappop(q)
+        return hap - c, c
+    else:
+        return -1,-1
 def lazer(ar,ac,dr,dc):
     global attack_related
     # 우하좌상 순서대로 움직일 수 있음
@@ -81,8 +83,6 @@ def boom(ar,ac,dr,dc):
 ###공격자는 피해받지않음
 
 for turn in range(1,K+1):
-    if grid.count([0]*M)==N-1:
-        break
     attack_related=[]
     # 1공격자 선정
     ##M+N만큼 공격력 증가
@@ -93,6 +93,8 @@ for turn in range(1,K+1):
     #2공격자 공격
     ##2-1 공격대상 선정
     damager_r,damager_c=select_damager(attacker_r, attacker_c)
+    if (damager_r,damager_c)==(-1,-1):
+        break
     attack_related.append((damager_r,damager_c))
     ##2-2레이저 공격
     ok=lazer(attacker_r,attacker_c,damager_r,damager_c)
