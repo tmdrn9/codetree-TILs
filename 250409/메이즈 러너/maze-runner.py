@@ -1,6 +1,11 @@
 #시작 1:00
 #설계 끝 1:14
-#코딩 끝 2:17
+#코딩 끝 2:24
+
+# import sys
+# sys.stdin=open('input.txt')
+# input=sys.stdin.readline
+
 import heapq
 N,M,K=map(int,input().split())
 people=[]
@@ -65,20 +70,18 @@ def find_box():
         box_size=max(rr,cc)
         if box_size==rr:
             br= r if r<exit_r else exit_r
-            if c<exit_c:
-                bc =c
-            elif c>exit_c:
-                bc = exit_c
-            else:
+            if c<=exit_c:
                 bc=0 if exit_c-box_size<=0 else exit_c-box_size
+            else:
+                bc =0 if c-box_size<=0 else c-box_size
+
         else:
             bc= c if c<exit_c else exit_c
-            if r<exit_r:
-                br =r
-            elif r>exit_r:
-                br = exit_r
+            if r<=exit_r:
+                br =0 if exit_r-box_size<=0 else exit_r-box_size
             else:
-                br=0 if exit_r-box_size<=0 else exit_r-box_size
+                br = 0 if r - box_size <= 0 else r - box_size
+
         heapq.heappush(q,(box_size,br,bc))
 
     return heapq.heappop(q)
