@@ -1,7 +1,8 @@
 #시작 1:00
 #설계 끝 1:14
-#코딩 끝 2:37
+#코딩 끝 2:39
 #people array제거
+
 
 import heapq
 N,M,K=map(int,input().split())
@@ -33,6 +34,7 @@ def move_people():
     ## 한 칸에 두명 이상의 참가자가 있을 수 있음
     ## 참가자가 출구에 도달하면 즉시 탈출
     temp=[row[:] for row in grid]
+    cnt=0
     for r in range(N):
         for c in range(N):
             if grid[r][c] < 0:
@@ -41,6 +43,7 @@ def move_people():
                     move_count -= n_people
                     temp[r][c] -= n_people
                 else:
+                    cnt-=n_people
                     for dx,dy in zip(dxs,dys):
                         nr,nc=r+dx,c+dy
                         if (0<=nr<N and 0<=nc<N and grid[nr][nc]<=0) and distance(nr,nc,exit_r, exit_c)<distance(r,c,exit_r, exit_c):
@@ -49,7 +52,7 @@ def move_people():
                             temp[nr][nc]+=n_people
                             break
     grid=temp
-
+    return cnt
 def find_box():
     ### 2개 이상이면 r작은것>c작은것
     q=[]
@@ -93,8 +96,9 @@ def rotate90(size,r,c):
 
 for turn in range(K):
     #1. 모든 참가지는 동시에 한칸씩 움직임 =>함수
-    move_people()
-
+    go=move_people()
+    if not go:
+        break
 
     #2. 미로회전
     ##한명 이상의 참가자와 출구를 포함한 가장작은 정사각형 선택 =>함수화
