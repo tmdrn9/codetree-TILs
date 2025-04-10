@@ -1,6 +1,6 @@
 #시작 3:00
 #설계 끝 3:18
-#코딩 끝 4:46
+#코딩 끝 4:54
 
 import heapq
 from collections import deque
@@ -78,7 +78,8 @@ for turn in range(M):
 
     #1루돌프 움직임
     move_r()
-
+    if all(santa_die):
+        break
     #2산타 순서대로 움직임
     for i in range(1,P+1):
         ##기절해있거나 격자밖으로 빠져나가 탈락한 산타는 움직일 수 없음
@@ -120,7 +121,7 @@ for turn in range(M):
 
     #게임종료
     # 모든 산타가 탈락하게되면 즉시 게임종료
-    if all(santa_die)==(P+1):
+    if all(santa_die):
         break
 
     # 매 턴 이후 탈락하지 않은 산타들은 +1점
