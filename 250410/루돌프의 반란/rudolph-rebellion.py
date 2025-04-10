@@ -1,7 +1,6 @@
 #시작 3:00
 #설계 끝 3:18
-#코딩 끝 4:54
-
+#코딩 끝 5:06
 import heapq
 from collections import deque
 def distance(x,y,x1,y1):
@@ -26,15 +25,15 @@ def in_range(x,y):
 def move_r():
     global Rr,Rc
     q=[]
-    dxs, dys = [-1, -1, -1, 0, 1, 1, 1, 0], [-1, 0, 1, 1, 1, 0, -1, -1]
     ## 탈락하지 않은 산타 중 가장 가까운 산타를 향해 돌진 (r 큰거>c큰거)
     for i in range(1,P+1):
         if not santa_die[i]:
             sr,sc=santa[i][0], santa[i][1]
-            heapq.heappush(q,(distance(Rr,Rc, sr,sc),-sr,-sc, i))
-    d,sr,sc,i=heapq.heappop(q)
+            heapq.heappush(q,(distance(Rr,Rc, sr,sc),-sr,-sc))
+    d,sr,sc=heapq.heappop(q)
     sr=-sr
     sc=-sc
+    i = santa.index((sr,sc))
     dx,dy=0,0
     if sr>Rr:
         Rr+=1
