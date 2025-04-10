@@ -1,20 +1,16 @@
-#시작 3:00
-#설계 끝 3:18
-#코딩 끝 5:06
 import heapq
-from collections import deque
 def distance(x,y,x1,y1):
     return (x-x1)**2+(y-y1)**2
 
 N,M,P,C,D=map(int,input().split())
 Rr,Rc=map(lambda x:int(x)-1 ,input().split())
 santa=[(-1,-1) for _ in range(P+1)]
-grid=[[0]*N for _ in range(N)]
+
 
 for _ in range(P):
     n,sr,sc=map(int,input().split())
     santa[n]=(sr-1,sc-1)
-    grid[sr-1][sc-1]=n
+
 santa_score=[0]*(P+1)
 santa_die=[1]+([0]*(P))
 santa_kigul=[0]*(P+1)
@@ -34,6 +30,7 @@ def move_r():
     sr=-sr
     sc=-sc
     i = santa.index((sr,sc))
+
     dx,dy=0,0
     if sr>Rr:
         Rr+=1
@@ -47,25 +44,24 @@ def move_r():
     elif sc<Rc:
         Rc-=1
         dy=-1
+
     if (Rr,Rc)==(sr,sc):
         # 루돌프가 움직여서 충돌 일어난 경우
         # 산타는 c만큼의 점수 획득+루돌프가 이동해온 방향으로 c만큼 밀려나기
         santa_score[i]+=C
-        santa_kigul[i] += 2
+        santa_kigul[i] = turn+2
         get_score(i,Rr,Rc,dx,dy,C)
 
 def get_score(i,r,c,dx,dy,jump):
     nr,nc= r+(dx*jump),c+(dy*jump)
-    santa[i]=(nr,nc)
     if not in_range(nr,nc):
         santa_die[i]=1
+        santa[i] = (-1, -1)
 
-    elif grid[nr][nc]!=0:
-        get_score(grid[nr][nc], nr, nc, dx, dy, 1)
-        grid[nr][nc] = i
-    else:
-        grid[nr][nc]=i
-    grid[r][c] = 0
+    elif (nr,nc) in santa:
+        j=santa.index((nr,nc))
+        get_score(j, nr, nc, dx, dy, 1)
+    santa[i] = (nr, nc)
 ## 산타와 루돌프 같은 칸에 있으면 발생
     ## 루돌프가 움직여서 충돌 일어난 경우, 산타는 c만큼의 점수 획득+루돌프가 이동해온 방향으로 c만큼 밀려나기
     ##밀려난 위치가 게임밖이라면 산타는 탈락
@@ -92,19 +88,17 @@ for turn in range(M):
                 ##루돌프와 가까워지는 방향으로 이동
                 ##다른산타가 있는 칸이나 게임판 밖으로 못움직임=>움직일수있는칸 없다면 움직이지않음
                 ##움직일 수 있어도 가까워지는 방향이아니면 움직이지않음
-                if in_range(nsx,nsy) and grid[nsx][nsy]==0 and original_dist>new_dist:
+                if in_range(nsx,nsy) and (nsx,nsy) not in santa and original_dist>new_dist:
                     heapq.heappush(q,(new_dist,ii))
             if q:
                 _,idx=heapq.heappop(q)
-                grid[sx][sy]=0
                 nsx, nsy=sx+s_dxs[idx],sy+s_dys[idx]
-                grid[nsx][nsy] = i
                 santa[i]=(nsx,nsy)
                 if (Rr,Rc)==(nsx,nsy):
                     # 산타가 움직여서 충돌 일어난 경우, 산타는 d만큼의 점수 획득
                     # 자신이 이동해온 반대방향으로 d만큼 밀려남
                     santa_score[i] += D
-                    santa_kigul[i] += 2
+                    santa_kigul[i]  = turn+2
                     get_score(i,nsx,nsy,-s_dxs[idx],-s_dys[idx],D)
 
     #충돌
