@@ -1,6 +1,8 @@
 #시작 4:31
 #설계끝 4:42
-#코딩끝 5:27
+#코딩끝 5:30
+
+
 from collections import deque
 import heapq
 
@@ -76,6 +78,8 @@ def find_camp(p_i):
 
 time=0
 while True:
+    # print(time)
+    time+=1
     bye=[]
     #1 격자안에 있는 사람 모두가 편의점 방향을 향해 1칸이동
     for i in people:
