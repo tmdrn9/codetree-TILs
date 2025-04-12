@@ -1,7 +1,6 @@
 #시작 4:31
 #설계끝 4:42
-#코딩끝 5:14
-
+#코딩끝 5:27
 from collections import deque
 import heapq
 
@@ -56,6 +55,7 @@ def find_camp(p_i):
                 sr, sc = store[p_i]
                 visited[sr][sc] = 1
                 q = deque([(sr, sc)])
+                find=False
                 while q:
                     r,c=q.popleft()
                     for dx,dy in zip(dxs,dys):
@@ -64,15 +64,18 @@ def find_camp(p_i):
                             visited[nr][nc]=visited[r][c]+1
                             q.append((nr,nc))
                             if (i,j)==(nr,nc):
+                                find=True
                                 break
-                heapq.heappush(hq,(visited[i][j],i,j))
+                    if find:
+                        break
+                if visited[i][j]!=0:
+                    heapq.heappush(hq,(visited[i][j],i,j))
     _,i,j=heapq.heappop(hq)
     return i,j
 
 
 time=0
 while True:
-    time+=1
     bye=[]
     #1 격자안에 있는 사람 모두가 편의점 방향을 향해 1칸이동
     for i in people:
