@@ -79,6 +79,7 @@ for k in range(1, K+1):
         for i in range(N):
             for j in range(N):
                 cnt = 0
+                q=[]
                 temp = [row[:] for row in grid]
                 for r,c in paper[kk]:
                     r,c=r+i,c+j
