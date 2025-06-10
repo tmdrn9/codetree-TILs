@@ -1,154 +1,138 @@
-import heapq
+# 점심시간 그룹 형성이 1명도 된다는 말은 없었잖아 ................................
+
+# 민트 초코 우유 
 from collections import deque
-# import sys
-# sys.stdin=open('input.txt')
-# input=sys.stdin.readline
-dxs,dys=[-1,1,0,0],[0,0,-1,1]
-
-N,T= map(int,input().split())
-food=[list(input()) for _ in range(N)]
-for i in range(N):
-    for j in range(N):
-        if food[i][j]=='T':
-            food[i][j] =0b100
-        elif food[i][j]=='C':
-            food[i][j] =0b010
-        else:
-            food[i][j] =0b001
-
-trust=[list(map(int,input().split())) for _ in range(N)]
-
-def sum_trust():
-    result=[0]*7
+def pickBoss(f, b):  # 신봉음식, 신앙심
+    boss = [[], [], []] 
+    visited = [[False for _ in range(N)] for _ in range(N)]
+ 
     for i in range(N):
         for j in range(N):
-            t_food=food[i][j]
-            if t_food==0b111:
-                result[0]+=trust[i][j]
-            elif t_food==0b110:
-                result[1] += trust[i][j]
-            elif t_food==0b101:
-                result[2] += trust[i][j]
-            elif t_food==0b011:
-                result[3] += trust[i][j]
-            elif t_food==0b001:
-                result[4] += trust[i][j]
-            elif t_food==0b010:
-                result[5] += trust[i][j]
-            else:
-                result[6] += trust[i][j]
-    return result
+            if visited[i][j] == False:    # 검사 시작
+                cnt = 0
+                group = [(b[i][j], i, j)]    #초기화
 
-def gruop():
-    ##인접한 학생들과 신봉음식이 완전히 같은 경우, 그룹형성
-    ##그룹 내 대표자 선정: 신앙심>r작은사람>c작은사람
-    ##대표자의 신앙심은 +(그룹원수-1)/나머지 그룹원 신앙심 -1
-    li_group=[]
-    visited=[[0]*N for _ in range(N)]
-
-    for i in range(N):
-        for j in range(N):
-            if visited[i][j]==0:
-                temp_group=[]
-                q=deque([(i,j)])
-                visited[i][j]=1
-                trustfood=food[i][j]
-                heapq.heappush(temp_group, (-trust[i][j], i, j))
+                #BFS
+                q = deque() 
+                q.append((i, j))
+                believe = f[i][j]   # 현재 학생 신봉 음식 
+                visited[i][j] = True # 방문표시
                 while q:
-                    r,c=q.popleft()
-                    for dx,dy in zip(dxs,dys):
-                        nr,nc=r+dx,c+dy
-                        if (0<=nr and nr<N and 0<=nc and nc<N) and not visited[nr][nc] and trustfood==food[nr][nc]:
-                            visited[nr][nc] = 1
-                            q.append((nr,nc))
-                            heapq.heappush(temp_group,(-trust[nr][nc],nr,nc))
-                li_group.append(temp_group)
-    leaders = []
-    for g in li_group:
-        n_p=len(g)
-        if n_p==1:
-            leaders.append(g[0])
-        else:
-            for n,p in enumerate(g):
-                if n==0:
-                    trust[p[1]][p[2]]+=n_p-1
-                    leaders.append(p)
-                else:
-                    trust[p[1]][p[2]] -= 1
-    return leaders
+                    r, c = q.popleft()
+                    cnt += 1 
+                    for dr, dc in d:
+                        nr, nc = r + dr, c + dc # 다음좌표
+                        if (0<=nr<N and 0<=nc<N) and visited[nr][nc] == False: # 방문 가능하면 
+                            if believe == f[nr][nc]: # 신봉음식 같으면 
+                                q.append((nr, nc))
+                                group.append((b[nr][nc], nr, nc))  
+                                visited[nr][nc] = True
+                #대표 선출
+                sortgroup = sorted(group, key=lambda x:(-x[0], x[1], x[2]))    # sort
+                bossr, bossc = sortgroup[0][1], sortgroup[0][2]
+                for _, pr, pc in sortgroup[1:]:
+                    b[pr][pc] -= 1 # 그룹원들 신앙심 제거 - 신앙심은 항상 1보다 같거나 큼
+                    b[bossr][bossc] += 1
+                boss[len(f[bossr][bossc][0])-1].append((b[bossr][bossc], bossr, bossc))
+    return boss, b    # 대표 리스트   
 
-def move_trust(leaders):
-    visited = [[0] * N for _ in range(N)]
+def makeUs(f, b, boss):  # 대표리스트, 신봉음식, 신앙심 
+    defence = [[False for _ in range(N)] for _ in range(N)]
+    # 대표자 우선순위 설정
+    for i in range(len(boss)):
+        if boss[i]:
+            boss[i] = sorted(boss[i], key=lambda x:(-x[0], x[1], x[2]))   
+    #print("boss", boss)
+    # 전파시작
+    flag = False
+    for i in range(3): # 세 그룹 순서대로
+        for bvalue, ar, ac in boss[i]: # 대표 전파자 정보 
 
-    re_leader=[]
-    for l in leaders:
-        n_one=bin(food[l[1]][l[2]]).count('1')#1의 갯수
-        heapq.heappush(re_leader,(n_one,l[0],l[1],l[2]))
+            if defence[ar][ac] == False: # 방어태세 아님
+                x = bvalue - 1
+                direct = bvalue % 4 # 전파 방향
+                b[ar][ac] = 1   # 1만 남기고
+            
+    #       x>y이면 강한 전파 : 전파 대상은 전파자의 사상에 완전히 동화, 동일 음식 신봉 / 전파자 y+1만큼 간절함 까임, 전파 대상은 신앙심 1 증가
+    #       x<=y 이면 약한전파 : 전파 대상은 전파자가 전파한 음식의 모든 기본 음식에 관심, -> 자기꺼 + 전파자꺼 모두합친음식을 신봉 / 전파자 간절함 모두 소진, 전파 대상 신앙심은 x 만큼 증가
+                br, bc = ar, ac
+                while x>0: 
+                    nr, nc = br + d[direct][0], bc + d[direct][1]   
+                    if (0<=nr<N and 0<=nc<N) and (f[br][bc] != f[nr][nc]):  # 전파 할 수 있으묜
+                        if x>b[nr][nc]: # 전파 대상의 신앙심이 간절함보다 작을때 -> 강한 전파 
+                            f[nr][nc] = [f[br][bc][0]]  # 신봉 음식 동일해짐
+                            #print("강한전파", f[nr][nc])
+                            x -= (b[nr][nc] + 1) # 간절함 까임
+                            b[nr][nc] += 1  
+                        else: 
+                            #newfood = ''.join(sorted(set(f[nr][nc]+f[br][bc])))
+                            for a in f[br][bc][0]: # 전파 대상의 음식까지 관심을 가져야함
+                                if a not in f[nr][nc][0]:
+                                    f[nr][nc][0] = f[nr][nc][0] + a 
+                                    #f[nr][nc].append(a)   # 없으면 추가
+                            f[nr][nc] = sorted(f[nr][nc][0])
+                            f[nr][nc] = [''.join(f[nr][nc])]   # 한 문자로 바꿈 
+                            #print("약한전파", f[nr][nc])
+                            b[nr][nc] += x
+                            x = 0
+                        for h in range(3):
+                            for k in range(len(boss[h])):   #전파한 곳이 리더라면 방어태새 on
+                                if nr == boss[h][k][1] and nc == boss[h][k][2]:
+                                    defence[nr][nc] = True  # 전파된 곳 방어태세 on
+                    elif (0<=nr<N and 0<=nc<N) and (f[br][bc] == f[nr][nc]):   # 갈수 있지만 전파 필요 x -> 패스
+                        #print('전파불필요')
+                        pass
+                    elif not (0<=nr<N and 0<=nc<N):
+                        #print('격자 벗어남')
+                        break  # 전파 종료
+                    br, bc = nr, nc  # 다음 턴
 
-    while re_leader:
-        leader=heapq.heappop(re_leader)
-        leader_r, leader_c = leader[2], leader[3]
-        ### 전파를 이미 당한 학생이라면 당일에는 전파하지않음,추가 전파 받는 것은 가능
-        if visited[leader_r][leader_c] !=1:
-            leader_trust =  trust[leader_r][leader_c]
-            trust[leader_r][leader_c] = 1
-            leader_x=leader_trust-1
-            leader_food=food[leader_r][leader_c]
-            ##대표자 신앙심을 4로 나눈 나머지에 따라 해당 방향으로 전파
-            d=leader_trust%4
-            # visited[leader_r][leader_c] = 1
+    return f, b
 
-            if leader_x<=0:
-                continue
-            r, c = leader_r, leader_c
+if __name__=="__main__":
 
-            ##전파 방향으로 이동하면서 전파시도
-            while leader_x>0:
-                nr,nc=r+dxs[d],c+dys[d]
-                ##전파대상이 전파자와 신봉음식이 다른경우에만 전파 진행(간절함 = 전파자 신앙심-1)
-                if 0<=nr and nr<N and 0<=nc and nc<N:
-                    if leader_food!=food[nr][nc]:
-                        if leader_x>trust[nr][nc]: ### 간절함>전파대상 신앙심 => 강한 전파성공
-                            #### 전파 대상은 전파자의 사상과 완전히 동화/전파자 간절함이 전파대상+1만큼 깍임/전파대상의 신앙심 +1
-                            food[nr][nc]=leader_food
-                            leader_x-= (trust[nr][nc])+1
-                            trust[nr][nc] += 1
-                            # leader_x-=trust[nr][nc]
-                        #### 전파자의 간절함이 0이되면 전파 종료
 
-                        else: ### 간절함<=전파대상 신앙심 => 약한 전파성공
-                            #### 전파 대상은 기존에 관심가지고있던 기본음식들과 전파자의 기본음식을 보두합친 음식을 신봉
-                            # new=list(food[nr][nc])[:]
-                            # for i,ii in enumerate(list(leader_food)):
-                            #     if ii=='1':
-                            #         new[i]='1'
-                            food[nr][nc] |= leader_food
-                            #### 전파 대상 신앙심 +간절함/전파자 간절함 0=> 전파 종료
-                            trust[nr][nc] += leader_x
-                            leader_x=0
-                        visited[nr][nc]=1
-                    r,c=nr,nc
-
-                ### 격자밖으로 나가거나 간절함이 0이되면 전파 종료
-                else:
-                    break
-
-for day in range(T):
-    #아침
-    ##모든 학생 신앙심+1
+# 입력
+    N, T = map(int, input().split()) 
+   
+    B = [] # 신앙심
+    food = [[] for _ in range(N)]  # 신봉 음식 
+    
     for i in range(N):
-        for j in range(N):
-            trust[i][j]+=1
+        foodTmp = map(str, input()) 
+        for s in foodTmp:
+            food[i].append([s])
 
-    #점심
-    li_group=gruop()
+    for _ in range(N):
+        bTmp = list(map(int, input().split()))   
+        B.append(bTmp)
 
-    #저녁
-    ##대표자들이 신앙 전파 =>전파자
-    move_trust(li_group)
+    # 전파 방향 0 1 2 3 위 아래 왼 오
+    d = [(-1, 0), (1, 0), (0, -1), (0, 1)]  #BFS
+    
+    for _ in range(T):   # T 최대 30
+        # 1. 아침시간
+        for i in range(N):  # 최대 2500
+            for j in range(N):
+                B[i][j] += 1
 
-    #신앙심 총합 출력
-    total_trust=sum_trust()
-    for t in total_trust:
-        print(t, end=' ')
-    print()
+        # 2. 점심시간
+        boss, B = pickBoss(food, B)   # 대표리스트
+
+        # 3. 저녁시간
+        food, B = makeUs(food, B, boss) 
+        #CMT, CT, MT, CM, M, C, T
+        ans = [0 for _ in range(7)]
+        # T 민트 1 C 초코 2 M 우유 3
+        for r in range(N):
+            for c in range(N):
+                whichfood = food[r][c][0]
+                if whichfood == 'CMT': ans[0] += B[r][c]
+                elif whichfood == 'CT': ans[1] += B[r][c]
+                elif whichfood == 'MT': ans[2] += B[r][c]
+                elif whichfood == 'CM': ans[3] += B[r][c]
+                elif whichfood == 'M': ans[4] += B[r][c]
+                elif whichfood == 'C': ans[5] += B[r][c]
+                elif whichfood == 'T': ans[6] += B[r][c]
+        
+        print(*ans)
